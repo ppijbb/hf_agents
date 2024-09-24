@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "doc_gen"
+version = "0.1.0"
+description = "doc_gen using crewAI"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<=3.13"
+crewai = { extras = ["tools"], version = ">=0.63.2,<1.0.0" }
+annotated-types = "^0.7.0"
+
+
+[tool.poetry.scripts]
+doc_gen = "src.doc_gen.main:run"
+run_crew = "src.doc_gen.main:run"
+train = "src.doc_gen.main:train"
+replay = "src.doc_gen.main:replay"
+test = "src.doc_gen.main:test"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
