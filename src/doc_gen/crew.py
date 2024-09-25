@@ -9,7 +9,8 @@ from langchain_community.llms import Ollama
 # from crewai_tools import SerperDevTool
 
 local_llm = "huggingface/mistralai/Mixtral-8x7B-Instruct-v0.1"
-local_llm = Ollama(model="qwen2.5:latest")
+# local_llm = Ollama(model="qwen2.5:latest")
+# local_llm = "ollama/qwen2.5:latest"
 
 @CrewBase
 class DocGenCrew():
@@ -51,7 +52,7 @@ class DocGenCrew():
 	def consultation_analysis_task(self) -> Task:
 		return Task(
 			config=self.tasks_config['consultation_analysis_task'],
-			context=[self.conversation_generation_task],
+			# context=[self.conversation_generation_task],
 			output_file='summary.txt'
 		)
 
@@ -59,7 +60,7 @@ class DocGenCrew():
 	def report_generation_task(self) -> Task:
 		return Task(
 			config=self.tasks_config['report_generation_task'],
-			context=[self.conversation_generation_task, self.consultation_analysis_task],
+			# context=[self.conversation_generation_task, self.consultation_analysis_task],
 			output_file='report.md'
 		)
 
