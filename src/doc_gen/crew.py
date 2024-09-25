@@ -1,6 +1,6 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-
+from langchain_community.llms import Ollama
 
 # Uncomment the following line to use an example of a custom tool
 # from doc_gen.tools.custom_tool import MyCustomTool
@@ -9,6 +9,7 @@ from crewai.project import CrewBase, agent, crew, task
 # from crewai_tools import SerperDevTool
 
 local_llm = "huggingface/mistralai/Mixtral-8x7B-Instruct-v0.1"
+local_llm = Ollama(model="qwen2.5:latest")
 
 @CrewBase
 class DocGenCrew():

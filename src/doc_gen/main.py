@@ -14,7 +14,8 @@ def run():
     inputs = {
         'topic': 'AI LLMs'
     }
-    DocGenCrew().crew().kickoff(inputs=inputs)
+    DocGenCrew().crew().kickoff(
+        inputs=inputs)
 
 
 def train():
@@ -25,20 +26,26 @@ def train():
         "topic": "AI LLMs"
     }
     try:
-        DocGenCrew().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
+        DocGenCrew().crew().train(
+            n_iterations=int(sys.argv[1]), 
+            filename=sys.argv[2], 
+            inputs=inputs)
 
     except Exception as e:
         raise Exception(f"An error occurred while training the crew: {e}")
+
 
 def replay():
     """
     Replay the crew execution from a specific task.
     """
     try:
-        DocGenCrew().crew().replay(task_id=sys.argv[1])
+        DocGenCrew().crew().replay(
+            task_id=sys.argv[1])
 
     except Exception as e:
         raise Exception(f"An error occurred while replaying the crew: {e}")
+
 
 def test():
     """
@@ -48,7 +55,10 @@ def test():
         "topic": "AI LLMs"
     }
     try:
-        DocGenCrew().crew().test(n_iterations=int(sys.argv[1]), openai_model_name=sys.argv[2], inputs=inputs)
+        DocGenCrew().crew().test(
+            n_iterations=int(sys.argv[1]), 
+            openai_model_name=sys.argv[2], 
+            inputs=inputs)
 
     except Exception as e:
         raise Exception(f"An error occurred while replaying the crew: {e}")
