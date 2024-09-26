@@ -8,9 +8,13 @@ from langchain_community.llms import Ollama
 # Check our tools documentations for more information on how to use them
 # from crewai_tools import SerperDevTool
 
-local_llm = "huggingface/mistralai/Mixtral-8x7B-Instruct-v0.1"
+# local_llm = "huggingface/mistralai/Mixtral-8x7B-Instruct-v0.1"
 # local_llm = Ollama(model="qwen2.5:latest")
-# local_llm = "ollama/qwen2.5:latest"
+local_llm = "ollama/llama3.2:latest"
+
+#TODO 1: 치의학 상황에 대한 대화 발생시키는 task, 이를 위한 tools
+#TODO 2: 대화 요약 및 인텐트 분석하는 task
+#TODO 3: 의학 보고서 작성하는 task
 
 @CrewBase
 class DocGenCrew():
@@ -50,28 +54,31 @@ class DocGenCrew():
 
 	@task
 	def consultation_analysis_task(self) -> Task:
+		# self.tasks_config['consultation_analysis_task'].update({
+		# 	"context": ["conversation_generation_task",]
+		# })
 		return Task(
 			config=self.tasks_config['consultation_analysis_task'],
-			# context=[self.conversation_generation_task],
 			output_file='summary.txt'
 		)
 
 	@task
 	def report_generation_task(self) -> Task:
+		# self.tasks_config['report_generation_task'].update({
+		# 	"context": ["conversation_generation_task", "consultation_analysis_task"]
+		# })
 		return Task(
 			config=self.tasks_config['report_generation_task'],
-			# context=[self.conversation_generation_task, self.consultation_analysis_task],
 			output_file='report.md'
 		)
 
 	@crew
 	def crew(self) -> Crew:
 		"""Creates the DocGen crew"""
-		print(self.tasks)
 		return Crew(
 			agents=self.agents, # Automatically created by the @agent decorator
 			tasks=self.tasks, # Automatically created by the @task decorator
 			process=Process.sequential,
-			verbose=True,
 			# process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
+			verbose=True
 		)

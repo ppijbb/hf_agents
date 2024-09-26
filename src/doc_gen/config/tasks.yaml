@@ -4,13 +4,15 @@ conversation_generation_task:
   expected_output: >
     A dialogue script that captures the interaction between the doctor and patient, focusing on symptoms, diagnosis, and treatment recommendations.
   agent: conversation_generator
-
+  
 consultation_analysis_task:
   description: >
     Analyze the doctor's consultation with the patient and extract key details such as symptoms, diagnosis, and treatment plans.
   expected_output: >
     A structured set of information extracted from the conversation, including the patient's symptoms, diagnosis, and any prescribed treatments or follow-up recommendations.
   agent: medical_interpreter
+  context:
+      - conversation_generation_task
 
 report_generation_task:
   description: >
@@ -18,3 +20,6 @@ report_generation_task:
   expected_output: >
     A complete medical report formatted according to the specified guidelines, including sections for patient symptoms, diagnosis, treatments, and follow-up recommendations.
   agent: medical_report_writer
+  context:
+    - conversation_generation_task
+    - consultation_analysis_task
