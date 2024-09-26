@@ -27,7 +27,7 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'AI LLMs'
+        "topic": "Dental Clinic"
     }
     asyncio.run(
         DocGenCrew().crew().kickoff_async(
@@ -39,7 +39,7 @@ def train():
     Train the crew for a given number of iterations.
     """
     inputs = {
-        "topic": "AI LLMs"
+        "topic": "Dental Clinic"
     }
     try:
         DocGenCrew().crew().train(
@@ -68,7 +68,7 @@ def test():
     Test the crew execution and returns the results.
     """
     inputs = {
-        "topic": "AI LLMs"
+        "topic": "Dental Clinic"
     }
     try:
         DocGenCrew().crew().test(
