@@ -2,12 +2,34 @@
 import sys
 import time
 import asyncio
+import random
 from src.doc_gen.crew import DocGenCrew
 
 # This main file is intended to be a way for your to run your
 # crew locally, so refrain from adding necessary logic into this file.
 # Replace with inputs you want to test with, it will automatically
 # interpolate any tasks and agents information
+
+departments = [
+    "Orofacial Pain and Oral Medicine",
+    "Oral Pathology",
+    "Oral and Maxillofacial Surgery",
+    "Pediatric Dentistry",
+    "Oral and Maxillofacial Radiology",
+    "Predoctoral Student Clinic",
+    "Orthodontics",
+    "Conservative Dentistry",
+    "Prosthodontics",
+    "Periodontics",
+    "Advanced General Dentistry"
+    ]
+situations = [
+    "a surgery", 
+    "a medical consultation", 
+    "discharge procedures", 
+    "inpatient status check"
+    ]
+
 
 def log_execution_time(func):
     """
@@ -27,7 +49,8 @@ def run():
     Run the crew.
     """
     inputs = {
-        "topic": "Dental Clinic"
+        "department": random.choice(departments),
+        "situation": random.choice(situations)
     }
     asyncio.run(
         DocGenCrew().crew().kickoff_async(

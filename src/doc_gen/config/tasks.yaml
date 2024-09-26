@@ -1,6 +1,7 @@
 conversation_generation_task:
   description: >
     Generate a natural conversation between a doctor and a patient based on a medical scenario. The conversation should include the patient's symptoms, the doctor's diagnosis, and the prescribed treatment plan.
+    Create a conversation that takes place during {situation} in the {department}.
   expected_output: >
     A dialogue script that captures the interaction between the doctor and patient, focusing on symptoms, diagnosis, and treatment recommendations.(target language: korean)
   agent: conversation_generator
