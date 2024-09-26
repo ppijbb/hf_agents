@@ -10,7 +10,7 @@ from langchain_community.llms import Ollama
 
 # local_llm = "huggingface/mistralai/Mixtral-8x7B-Instruct-v0.1"
 # local_llm = Ollama(model="qwen2.5:latest")
-local_llm = "ollama/llama3.2:latest"
+local_llm = "ollama/Gemma-Ko-Merge:latest"
 
 #TODO 1: 치의학 상황에 대한 대화 발생시키는 task, 이를 위한 tools
 #TODO 2: 대화 요약 및 인텐트 분석하는 task
