@@ -2,14 +2,14 @@ conversation_generation_task:
   description: >
     Generate a natural conversation between a doctor and a patient based on a medical scenario. The conversation should include the patient's symptoms, the doctor's diagnosis, and the prescribed treatment plan.
   expected_output: >
-    A dialogue script that captures the interaction between the doctor and patient, focusing on symptoms, diagnosis, and treatment recommendations.
+    A dialogue script that captures the interaction between the doctor and patient, focusing on symptoms, diagnosis, and treatment recommendations.(target language: korean)
   agent: conversation_generator
   
 consultation_analysis_task:
   description: >
     Analyze the doctor's consultation with the patient and extract key details such as symptoms, diagnosis, and treatment plans.
   expected_output: >
-    A structured set of information extracted from the conversation, including the patient's symptoms, diagnosis, and any prescribed treatments or follow-up recommendations.
+    A structured set of information extracted from the conversation, including the patient's symptoms, diagnosis, and any prescribed treatments or follow-up recommendations.(target language: korean)
   agent: medical_interpreter
   context:
       - conversation_generation_task
@@ -18,7 +18,7 @@ report_generation_task:
   description: >
     Based on the analyzed consultation, generate a structured medical report that includes diagnosis, treatment plan, and other relevant patient information in the required format.
   expected_output: >
-    A complete medical report formatted according to the specified guidelines, including sections for patient symptoms, diagnosis, treatments, and follow-up recommendations.
+    A complete medical report formatted according to the specified guidelines, including sections for patient symptoms, diagnosis, treatments, and follow-up recommendations.(target language: korean)
   agent: medical_report_writer
   context:
     - conversation_generation_task
@@ -28,7 +28,7 @@ intent_extraction_task:
   description: >
     Analyze the generated doctor-patient conversation and extract key medical intents. Identify and categorize intentions such as symptom reporting, diagnosis requests, treatment discussions, and follow-up arrangements.
   expected_output: >
-    A structured list of identified medical intents, each categorized and briefly explained. The output should include the context in which each intent was expressed.
+    A structured list of identified medical intents, each categorized and briefly explained. The output should include the context in which each intent was expressed.(target language: korean)
   agent: medical_intent_extractor
   context:
     - conversation_generation_task
