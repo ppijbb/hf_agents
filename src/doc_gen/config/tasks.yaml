@@ -23,3 +23,12 @@ report_generation_task:
   context:
     - conversation_generation_task
     - consultation_analysis_task
+
+intent_extraction_task:
+  description: >
+    Analyze the generated doctor-patient conversation and extract key medical intents. Identify and categorize intentions such as symptom reporting, diagnosis requests, treatment discussions, and follow-up arrangements.
+  expected_output: >
+    A structured list of identified medical intents, each categorized and briefly explained. The output should include the context in which each intent was expressed.
+  agent: medical_intent_extractor
+  context:
+    - conversation_generation_task
