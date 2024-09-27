@@ -1,13 +1,12 @@
+import random
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from langchain_community.llms import Ollama
-from langchain.tools import BaseTool
 
 # Uncomment the following line to use an example of a custom tool
-# from doc_gen.tools.custom_tool import MyCustomTool
-
+from src.doc_gen.tools.custom_tool import MedicalDocumentTemplateTool, MedicalDialogueSampleTool
 # Check our tools documentations for more information on how to use them
-# from crewai_tools import SerperDevTool
+from crewai_tools import SerperDevTool
 
 # local_llm = "huggingface/mistralai/Mixtral-8x7B-Instruct-v0.1"
 local_llm1 = "ollama/qwen2.5:latest"
@@ -17,29 +16,6 @@ local_llm2 = "ollama/Gemma-Ko-Merge:latest"
 #TODO 2: 대화 요약 및 인텐트 분석하는 task
 #TODO 3: 의학 보고서 작성하는 task
 
-class MedicalDocumentTemplateTool(BaseTool):
-	name="MedicalDocumentTemplateTool"
-	description = "Give Report Format."
-
-	def _run(self, report_type: str) -> str:
-        # 다양한 보고서 유형에 따른 템플릿 반환
-		return """
-        # Medical Report
-        
-        ## Patient Information
-        - Name: {name}
-        - Age: {age}
-        - Gender: {gender}
-        
-        ## Chief Complaint
-        {chief_complaint}
-        
-        ## Diagnosis
-        {diagnosis}
-        
-        ## Treatment Plan
-        {treatment_plan}
-        """
 
 @CrewBase
 class DocGenCrew():
@@ -49,7 +25,7 @@ class DocGenCrew():
 	def conversation_generator(self) -> Agent:
 		return Agent(
 			config=self.agents_config['Conversation_Generator'],
-			# tools=[MyCustomTool()], # Example of custom tool, loaded on the beginning of file
+			tools=[MedicalDialogueSampleTool()], # Example of custom tool, loaded on the beginning of file
 			verbose=True,
 			llm=local_llm1
 		)
@@ -75,7 +51,7 @@ class DocGenCrew():
 	def medical_report_writer(self) -> Agent:
 		return Agent(
 			config=self.agents_config['Medical_Report_Writer'],
-			tools=[MedicalDocumentTemplateTool(),],
+			# tools=[MedicalDocumentTemplateTool(),],
 			verbose=True,
 			llm=local_llm2
 		)
