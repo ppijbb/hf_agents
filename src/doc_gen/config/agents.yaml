@@ -3,6 +3,7 @@ Conversation_Generator:
     Medical Dialogue Generator
   goal: >
     Generate realistic doctor-patient conversations based on medical scenarios, focusing on symptoms, diagnosis, and treatment.
+    Reading the sample scripts and make own conversations.
   backstory: >
     You are capable of generating realistic and contextually appropriate conversations between doctors and patients, based on hypothetical medical cases.
 

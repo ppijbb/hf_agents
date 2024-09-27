@@ -15,8 +15,6 @@ departments = [
     "Oral Pathology",
     "Oral and Maxillofacial Surgery",
     "Pediatric Dentistry",
-    "Oral and Maxillofacial Radiology",
-    "Predoctoral Student Clinic",
     "Orthodontics",
     "Conservative Dentistry",
     "Prosthodontics",

@@ -18,7 +18,7 @@ class MedicalDocumentTemplateTool(BaseTool):
 		"Give Report Format."
 		)
 
-	def _run(self, report_type: str) -> str:
+	def _run(self, tool_input: str) -> str:
         # 다양한 보고서 유형에 따른 템플릿 반환
 		return """
         # Medical Report
@@ -44,6 +44,6 @@ class MedicalDialogueSampleTool(BaseTool):
 		"Sample dialouge example for generation. Will give a random dialogue."
 		)
 
-	def _run(self, report_type: str) -> str:
+	def _run(self, tool_input: str) -> str:
         # 다양한 보고서 유형에 따른 템플릿 반환
 		return random.choice(DIALOGUE_SAMPLES).strip()
