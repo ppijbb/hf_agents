@@ -41,9 +41,9 @@ class MedicalDocumentTemplateTool(BaseTool):
 class MedicalDialogueSampleTool(BaseTool):
 	name: str = "MedicalDialogueSampleTool"
 	description: str = (
-		"Sample dialouge example for generation. Will give a random dialogue."
+		"Sample dialouge example for generation. Will give a random dialogue. Cannot use as a Final Answer."
 		)
 
 	def _run(self, tool_input: str) -> str:
         # 다양한 보고서 유형에 따른 템플릿 반환
-		return random.choice(DIALOGUE_SAMPLES).strip()
+		return f"""<example>\n{random.choice(DIALOGUE_SAMPLES).strip()}\n</example>"""

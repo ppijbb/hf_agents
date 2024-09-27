@@ -50,9 +50,11 @@ def run():
         "department": random.choice(departments),
         "situation": random.choice(situations)
     }
-    asyncio.run(
-        DocGenCrew().crew().kickoff_async(
-            inputs=inputs))
+    # asyncio.run(
+    #     DocGenCrew().crew().kickoff_async(
+    #         inputs=inputs))
+    while True:
+        DocGenCrew().crew().kickoff(inputs=inputs)
 
 @log_execution_time
 def train():
