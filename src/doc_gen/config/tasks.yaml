@@ -1,7 +1,8 @@
 conversation_generation_task:
   description: >
     Generate a natural conversation between a doctor and a patient based on a medical scenario. The conversation should include the patient's symptoms, the doctor's diagnosis, and the prescribed treatment plan.
-    The wording of the conversation uses tone in real situations. Recognize that everyday speech is a domain situation in which it is used.
+    The wording of the conversation uses tone in real situations. Recognize that every speech must be a recorded in situation.
+    Dialouge must naturally flow and be contextually appropriate. Not likely to be a transcript of a real conversation.
     Create a conversation that takes place during {situation} in the {department}.
   expected_output: >
     A dialogue script that captures the interaction between the doctor and patient, focusing on symptoms, diagnosis, and treatment recommendations.(target language: korean)
@@ -10,6 +11,7 @@ conversation_generation_task:
 intent_extraction_task:
   description: >
     Analyze the generated doctor-patient conversation and extract key medical intents. Identify and categorize intentions such as symptom reporting, diagnosis requests, treatment discussions, and follow-up arrangements.
+    Intent should be a simple word only.
   expected_output: >
     A structured list of identified medical intents, each categorized and briefly explained. The output should include the context in which each intent was expressed.(target language: korean)
   agent: medical_intent_extractor
@@ -19,6 +21,7 @@ intent_extraction_task:
 consultation_analysis_task:
   description: >
     Analyze the doctor's consultation with the patient and extract key details such as symptoms, diagnosis, and treatment plans.
+    The analysis should focus on identifying the most relevant information for creating a medical report.
   expected_output: >
     A structured set of information extracted from the conversation, including the patient's symptoms, diagnosis, and any prescribed treatments or follow-up recommendations.(target language: korean)
   agent: medical_interpreter
@@ -29,6 +32,7 @@ consultation_analysis_task:
 report_generation_task:
   description: >
     Based on the analyzed consultation, generate a structured medical report that includes diagnosis, treatment plan, and other relevant patient information in the required format.
+    Report must be written in a professional manner and include all necessary sections with a simple word only.
   expected_output: >
     A complete medical report formatted according to the specified guidelines, including sections for patient symptoms, diagnosis, treatments, and follow-up recommendations.(target language: korean)
   agent: medical_report_writer
