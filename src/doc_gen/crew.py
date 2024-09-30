@@ -60,14 +60,14 @@ class DocGenCrew():
 	def conversation_generation_task(self) -> Task:
 		return Task(
 			config=self.tasks_config['conversation_generation_task'],
-			output_file='dialouge.txt'
+			output_file='outputs/dialouge.txt'
 		)
 	
 	@task
 	def intent_extraction_task(self) -> Task:
 		return Task(
 	        config=self.tasks_config['intent_extraction_task'],
-	        output_file='intents.txt'
+	        output_file='outputs/intents.txt'
 		)
 	
 	@task
@@ -77,7 +77,7 @@ class DocGenCrew():
 		# })
 		return Task(
 			config=self.tasks_config['consultation_analysis_task'],
-			output_file='summary.txt'
+			output_file='outputs/summary.txt'
 		)
 
 	@task
@@ -87,7 +87,7 @@ class DocGenCrew():
 		# })
 		return Task(
 			config=self.tasks_config['report_generation_task'],
-			output_file='report.md'
+			output_file='outputs/report.md'
 		)
 
 	@crew
