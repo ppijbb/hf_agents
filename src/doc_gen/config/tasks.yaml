@@ -129,9 +129,15 @@ intent_extraction_task:
     Identify and categorize intentions such as symptom reporting, diagnosis requests, treatment discussions, and follow-up arrangements.
     Intent should be a simple word only.
     Follow the format below:
-      * intent1 : intent1 keywords
-      * intent2 : intent2 keywords
-      ...
+      * intent1 
+          - intent1 keyword
+          - intent1 keyword
+            ...
+      * intent2 
+          - intent2 keyword
+          - intent2 keyword
+            ...
+        ...
   expected_output: >
     A structured list of identified medical intents, each categorized and briefly explained.
     The output should include the context in which each intent was expressed.(target language: korean)
