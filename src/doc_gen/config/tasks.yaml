@@ -159,5 +159,6 @@ report_generation_task:
     A complete medical report formatted according to the specified guidelines, including sections for patient symptoms, diagnosis, treatments, and follow-up recommendations.(target language: korean)
   agent: medical_report_writer
   context:
+    - intent_extraction_task
     - conversation_generation_task
     - consultation_analysis_task
