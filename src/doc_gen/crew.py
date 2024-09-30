@@ -101,6 +101,7 @@ class DocGenCrew():
 			verbose=True,
 			planning=True,
 			share_crew=True,
+			memory=True,
 			planning_llm=local_llm1,
 			manager_agent=Agent(
 				role='작업 매니저',
