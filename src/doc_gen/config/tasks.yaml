@@ -1,16 +1,37 @@
 conversation_generation_task:
   description: >
-    Generate a natural conversation between a doctor and a patient based on a medical scenario. The conversation should include the patient's symptoms, the doctor's diagnosis, and the prescribed treatment plan.
-    The wording of the conversation uses tone in real situations. Recognize that every speech must be a recorded in situation.
-    Create a conversation that takes place during {situation} in the {department}.
+    Generate a natural conversation between a doctor and a patient based on a medical scenario. 
+    The conversation should include the patient's symptoms, the doctor's diagnosis, and the prescribed treatment plan.
+    The wording of the conversation uses tone in real situations.
+    Follow the format below:
+      a medical consultation in the Advanced General Dentistry at 2024/05/07
+      <example>
+        의사: 교정 하시려는 이유가.. 어떤 부분이시죠?
+        환자: 거울 봤을 때 고르지 않아 보이는 것도 있고 가끔 물 때 아플 때도 있고..
+        의사: ‘이~’ 해보세요. 여기 겹쳐있는 부분이 큰 앞니하고 작은 앞니 사이로 밑에 치아가 들어가는 거예요. 다른 데로 넣어서 조금 편하게 하고 싶어도 항상 이를 물 때는 그리로 들어가야 돼요. 그렇게 될 수 밖에 없어요. 그럼 여기가 운동하는 각도가 다르죠. 보통 ‘아~’하고 다물고 하면 똑바로 이렇게 되어야 하는데 항상 앞에 치우쳐서 기능을 한단 말이에요. 오른쪽에 가는 부하하고 왼쪽에 가는 부하가 다르죠. 환경이 그러니까 불편할 확률이 조금 더 높아져요. 피곤하거나 그러면 근육이 좀 불편할 수가 있죠. 
+        환자: 가끔 그런 것 같긴 해요. 
+        의사: 그런 점이 있고, 이 엑스레이 사진은 좀전에 빙 돌아가면서 찍은 사진 있죠? 여기서부터 얼굴을 평면으로 전개도처럼 쭉 돌린거예요. 잇몸이 안 좋거나 뿌리가 짧은 분들이 또 있어요. 뿌리 부분이 짧거나 그러면 교정할 때 좀 불리해요. 교정하면 뿌리가 문제는 안되지만 아주 조금씩 짧아지는 경우도 있거든요. 시작하기 전부터 뿌리가 어떤 이유 때문에 짧은 분들이 있어요. 그런 분들은 교정할 때 목표치를 조금 낮추거나.. 제약 조건이 있거나 아주 심하면 교정을 할 수 없을 수도 있어요. 왜냐면 너무 짧은 분들, 그런 분들은 드문데 교정하다가 이가 빠질 수도 있어요. 그럴 수도 있기 때문에 엑스레이를 찍어서 그런 것을 먼저 체크합니다. 
+        환자: 저는 어떤 편이에요?
+        의사: 지금 뿌리는 아주 좋아요. 더 좋을 수가 없어요. 아주 좋아요.
+        의사: 자 이거는 옆에서 찍은 사진이에요. 아까는 이렇게 돌려서 찍은 사진이고 이건 옆에서 찍은 사진인데 이건 왜 보냐면 윗치아하고 아랫치아 각도를 주로 보는 거예요. 치아가 뻗어있느냐 아니면 안으로 쏠려있느냐 그런 것들은 이 사진을 찍어봐야 돼요. 찍어서 이 각도를 보고 치아가 입 모양에 어떤 영향을 주느냐를 봅니다…… (중략) 지금 말씀드린 것 중에 혹시 궁금하신 점 있으실까요?
+        환자: 저는 교정을 해야 된다면 발치도 해야 되나요?
+        의사: 선생님 같은 경우는 발치하지 않으셔도 돼요. 자세한 것은 본도 뜨고 카메라 사진도 찍어서 조금 더 정밀하게 봐야 되는데 지금 봤을 때 거의 70~80% 이상으로 발치는 필요 없구요. 
+        환자: 교정 시작하게 되면 얼마나 걸릴까요?
+        의사: 교정 기간은 1년 반 정도 걸려요. (중략) 치료의 완성도를 더 좋게 할 수 있어요. 1년 정도로도 거꾸로 물리는 배열 정도는 조금 좋게 할 수 있는데 촉박해요. 시간에 쫓기면 교정을 제대로 할 수 없기 때문에 한 1년 반 정도는 생각을 하셔야 되고, 한 달에 한 번, 4주에 한 번씩 나오셔야 하고 간혹 5, 6주에 한번씩 오실 때도 있는데 그건 경우마다 달라요. 
+      </example>
+  
+    Create a conversation that takes place during {situation} in the {department} at {date}.
   expected_output: >
     A dialogue script that captures the interaction between the doctor and patient, focusing on symptoms, diagnosis, and treatment recommendations.(target language: korean)
   agent: conversation_generator
 
 intent_extraction_task:
   description: >
-    Analyze the generated doctor-patient conversation and extract key medical intents. Identify and categorize intentions such as symptom reporting, diagnosis requests, treatment discussions, and follow-up arrangements.
+    Analyze the generated doctor-patient conversation and extract key medical intents. 
+    Identify and categorize intentions such as symptom reporting, diagnosis requests, treatment discussions, and follow-up arrangements.
     Intent should be a simple word only.
+    Follow the format below:
+      * intents : intents keywords
   expected_output: >
     A structured list of identified medical intents, each categorized and briefly explained. 
     The output should include the context in which each intent was expressed.(target language: korean)

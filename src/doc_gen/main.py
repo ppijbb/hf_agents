@@ -2,6 +2,7 @@
 import sys
 import time
 import asyncio
+import datetime
 import random
 from src.doc_gen.crew import DocGenCrew
 
@@ -28,6 +29,8 @@ situations = [
     "inpatient status check"
     ]
 
+def get_today(date=(datetime.datetime.now() + datetime.timedelta(hours=9)).strftime("%Y%m%d")):
+    return f"{int(date[:4])}/{int(date[4:-2]):02d}/{int(date[-2:]):02d}"
 
 def log_execution_time(func):
     """
@@ -48,7 +51,8 @@ def run():
     """
     inputs = {
         "department": random.choice(departments),
-        "situation": random.choice(situations)
+        "situation": random.choice(situations),
+        "date": get_today()
     }
     # asyncio.run(
     #     DocGenCrew().crew().kickoff_async(
@@ -63,7 +67,8 @@ def train():
     """
     inputs = {
         "department": random.choice(departments),
-        "situation": random.choice(situations)
+        "situation": random.choice(situations),
+        "date": get_today()
     }
     try:
         DocGenCrew().crew().train(
@@ -93,7 +98,8 @@ def test():
     """
     inputs = {
         "department": random.choice(departments),
-        "situation": random.choice(situations)
+        "situation": random.choice(situations),
+        "date": get_today()
     }
     try:
         DocGenCrew().crew().test(
