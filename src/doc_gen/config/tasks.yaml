@@ -70,7 +70,7 @@ conversation_generation_task:
         환자: 네 원장님 오늘 너무 감사합니다.
       </example>
       <example>
-        [info] a medical consultation in the Advanced General Dentistry at 2024/05/07
+        [info] inpatient status check in the Oral Pathology at 2020/02/17
         ---------------------------------------
         <파노라마 사진을 보며>
         의사: 이쪽이 오른쪽이고 이쪽이 왼쪽입니다.
