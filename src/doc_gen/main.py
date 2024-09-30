@@ -62,7 +62,8 @@ def train():
     Train the crew for a given number of iterations.
     """
     inputs = {
-        "topic": "Dental Clinic"
+        "department": random.choice(departments),
+        "situation": random.choice(situations)
     }
     try:
         DocGenCrew().crew().train(
@@ -91,7 +92,8 @@ def test():
     Test the crew execution and returns the results.
     """
     inputs = {
-        "topic": "Dental Clinic"
+        "department": random.choice(departments),
+        "situation": random.choice(situations)
     }
     try:
         DocGenCrew().crew().test(
