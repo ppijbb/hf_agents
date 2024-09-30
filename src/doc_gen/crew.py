@@ -25,7 +25,7 @@ class DocGenCrew():
 	def conversation_generator(self) -> Agent:
 		return Agent(
 			config=self.agents_config['Conversation_Generator'],
-			tools=[MedicalDialogueSampleTool()], # Example of custom tool, loaded on the beginning of file
+			# tools=[MedicalDialogueSampleTool()], # Example of custom tool, loaded on the beginning of file
 			verbose=True,
 			llm=local_llm2
 		)
@@ -99,17 +99,17 @@ class DocGenCrew():
 			process=Process.sequential,
 			# process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
 			verbose=True,
-			# planning=True,
+			planning=True,
 			share_crew=True,
-			# planning_llm=local_llm2,
-			# manager_agent=Agent(
-			# 	role='작업 매니저',
-			# 	goal='전체 작엄 매니지먼트 전문가',
-			# 	backstory="""
-			# 	크루들 간의 원활한 업무가 진행되도록 관리, 감독합니다.
-			# 	""",
-			# 	verbose=True,
-			# 	allow_delegation=True,
-			# 	llm=local_llm2,
-			# )
+			planning_llm=local_llm1,
+			manager_agent=Agent(
+				role='작업 매니저',
+				goal='전체 작엄 매니지먼트 전문가',
+				backstory="""
+				크루들 간의 원활한 업무가 진행되도록 관리, 감독합니다.
+				""",
+				verbose=True,
+				allow_delegation=True,
+				llm=local_llm1,
+			)
 		)
