@@ -4,8 +4,9 @@ conversation_generation_task:
     The conversation should include the patient's symptoms, the doctor's diagnosis, and the prescribed treatment plan.
     The wording of the conversation uses tone in real situations.
     Follow the format below:
-      a medical consultation in the Advanced General Dentistry at 2024/05/07
       <example>
+        [info] a medical consultation in the Advanced General Dentistry at 2024/05/07
+        ---------------------------------------
         의사: 교정 하시려는 이유가.. 어떤 부분이시죠?
         환자: 거울 봤을 때 고르지 않아 보이는 것도 있고 가끔 물 때 아플 때도 있고..
         의사: ‘이~’ 해보세요. 여기 겹쳐있는 부분이 큰 앞니하고 작은 앞니 사이로 밑에 치아가 들어가는 거예요. 다른 데로 넣어서 조금 편하게 하고 싶어도 항상 이를 물 때는 그리로 들어가야 돼요. 그렇게 될 수 밖에 없어요. 그럼 여기가 운동하는 각도가 다르죠. 보통 ‘아~’하고 다물고 하면 똑바로 이렇게 되어야 하는데 항상 앞에 치우쳐서 기능을 한단 말이에요. 오른쪽에 가는 부하하고 왼쪽에 가는 부하가 다르죠. 환경이 그러니까 불편할 확률이 조금 더 높아져요. 피곤하거나 그러면 근육이 좀 불편할 수가 있죠. 
@@ -31,7 +32,9 @@ intent_extraction_task:
     Identify and categorize intentions such as symptom reporting, diagnosis requests, treatment discussions, and follow-up arrangements.
     Intent should be a simple word only.
     Follow the format below:
-      * intents : intents keywords
+      * intent1 : intent1 keywords
+      * intent2 : intent2 keywords
+      ...
   expected_output: >
     A structured list of identified medical intents, each categorized and briefly explained. 
     The output should include the context in which each intent was expressed.(target language: korean)
@@ -43,6 +46,7 @@ consultation_analysis_task:
   description: >
     Analyze the doctor's consultation with the patient and extract key details such as symptoms, diagnosis, and treatment plans.
     The analysis should focus on identifying the most relevant information for creating a medical report.
+    The categories would be in SOAP note (an acronym for subjective, objective, assessment, and plan).
   expected_output: >
     A structured set of information extracted from the conversation, including the patient's symptoms, diagnosis, and any prescribed treatments or follow-up recommendations.(target language: korean)
   agent: medical_interpreter

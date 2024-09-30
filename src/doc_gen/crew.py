@@ -99,10 +99,10 @@ class DocGenCrew():
 			process=Process.sequential,
 			# process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
 			verbose=True,
-			planning=True,
+			# planning=True,
 			share_crew=True,
 			# memory=True,
-			planning_llm=local_llm1,
+			# planning_llm=local_llm1,
 			manager_agent=Agent(
 				role='작업 매니저',
 				goal='전체 작엄 매니지먼트 전문가',
