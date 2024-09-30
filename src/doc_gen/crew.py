@@ -60,6 +60,7 @@ class DocGenCrew():
 	def conversation_generation_task(self) -> Task:
 		return Task(
 			config=self.tasks_config['conversation_generation_task'],
+			output_file='dialouge.txt'
 		)
 	
 	@task
