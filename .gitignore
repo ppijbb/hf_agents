@@ -1,6 +1,8 @@
 .env
 __pycache__/
 report.md
+dialogue.txt
 summary.txt
 intents.txt
 sample/*
+outputs/*

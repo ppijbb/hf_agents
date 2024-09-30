@@ -6,12 +6,12 @@
 # export OLLAMA_MAX_LOADED_MODELS="5"     # Maximum number of loaded models per GPU
 # export OLLAMA_MAX_QUEUE                # Maximum number of queued requests
 # export OLLAMA_MODELS                   # The path to the models directory
-export OLLAMA_NUM_PARALLEL="20"             # Maximum number of parallel requests
+export OLLAMA_NUM_PARALLEL="1"             # Maximum number of parallel requests
 # export OLLAMA_NOPRUNE                  # Do not prune model blobs on startup
 # export OLLAMA_ORIGINS                  # A comma separated list of allowed origins
 # export OLLAMA_SCHED_SPREAD             # Always schedule model across all GPUs
 # export OLLAMA_TMPDIR                   # Location for temporary files
-# export OLLAMA_FLASH_ATTENTION          # Enabled flash attention
+export OLLAMA_FLASH_ATTENTION="1"         # Enabled flash attention
 # export OLLAMA_LLM_LIBRARY              # Set LLM library to bypass autodetection
 # export OLLAMA_GPU_OVERHEAD             # Reserve a portion of VRAM per GPU (bytes)
 # export OLLAMA_LOAD_TIMEOUT             # How long to allow model loads to stall before giving up (default "5m")
