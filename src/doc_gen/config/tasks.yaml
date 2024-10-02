@@ -141,12 +141,12 @@ intent_extraction_task:
     Intent should be a simple word only.
     Follow the format below:
       * intent1 
-          - intent1 keyword
-          - intent1 keyword
+          - intent1 keyword (word only)
+          - intent1 keyword (word only)
             ...
       * intent2 
-          - intent2 keyword
-          - intent2 keyword
+          - intent2 keyword (word only)
+          - intent2 keyword (word only)
             ...
         ...
   expected_output: >
