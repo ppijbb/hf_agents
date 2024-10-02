@@ -1,10 +1,12 @@
 import random
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
+from crewai_tools import DOCXSearchTool
 from langchain_community.llms import Ollama
 
 # Uncomment the following line to use an example of a custom tool
-from src.doc_gen.tools.custom_tool import MedicalDocumentTemplateTool, MedicalDialogueSampleTool
+from src.doc_gen.tools.custom_tool import (MedicalDocumentTemplateTool, MedicalDialogueSampleTool, 
+										   WebSearchTool, PubmedTool, ArxivTool)
 # Check our tools documentations for more information on how to use them
 from crewai_tools import SerperDevTool
 
@@ -20,6 +22,15 @@ local_llm2 = "ollama/Gemma-Ko-Merge:latest"
 @CrewBase
 class DocGenCrew():
 	"""DocGen crew"""
+
+	@agent
+	def domain_searcher(self) -> Agent:
+		return Agent(
+			config=self.agents_config['Domain_Searcher'],
+			tools=[PubmedTool(), WebSearchTool()], # Example of custom tool, loaded on the beginning of file
+			verbose=True,
+			llm=local_llm2
+		)
 
 	@agent
 	def conversation_generator(self) -> Agent:
@@ -55,6 +66,13 @@ class DocGenCrew():
 			verbose=True,
 			llm=local_llm2
 		)
+	
+	@task
+	def domain_searching_task(self) -> Task:
+		return Task(
+			config=self.tasks_config['domain_searching_task'],
+			output_file='outputs/domain_report.txt'
+		)	
 
 	@task
 	def conversation_generation_task(self) -> Task:
