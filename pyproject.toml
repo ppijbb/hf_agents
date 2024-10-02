@@ -10,7 +10,8 @@ crewai = { extras = ["tools"], version = ">=0.63.2,<1.0.0" }
 annotated-types = "^0.7.0"
 xmltodict = "^0.13.0"
 duckduckgo-search = "^6.2.13"
-
+unsloth = { extras=["cu121-torch240"], git = "https://github.com/unslothai/unsloth.git" }
+ 
 
 [tool.poetry.scripts]
 doc_gen = "src.doc_gen.main:run"
