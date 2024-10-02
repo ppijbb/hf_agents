@@ -15,5 +15,7 @@ export OLLAMA_FLASH_ATTENTION="1"         # Enabled flash attention
 # export OLLAMA_LLM_LIBRARY               # Set LLM library to bypass autodetection
 # export OLLAMA_GPU_OVERHEAD              # Reserve a portion of VRAM per GPU (bytes)
 # export OLLAMA_LOAD_TIMEOUT              # How long to allow model loads to stall before giving up (default "5m")
+export OLLAMA_NUM_THREADS=32              # Number of threads per model 
+
 
 ollama serve

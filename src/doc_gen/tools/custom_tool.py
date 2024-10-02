@@ -1,8 +1,8 @@
 import random
-from crewai_tools import BaseTool
+from typing import Any, Callable, Optional, Type
+from crewai_tools import BaseTool as CrewBaseTool
 from crewai_tools import (SerperDevTool, ScrapeWebsiteTool, DallETool,
                           WebsiteSearchTool, SeleniumScrapingTool, tool)
-from crewai_tools.tools.base_tool import BaseTool as CrewBaseTool
 from crewai.tasks.task_output import TaskOutput
 from crewai.tasks.conditional_task import ConditionalTask
 
@@ -17,17 +17,23 @@ from langchain_community.tools.google_trends.tool import GoogleTrendsQueryRun
 from langchain_community.utilities.google_trends import GoogleTrendsAPIWrapper
 from src.doc_gen.tools.tool_data import DIALOGUE_SAMPLES
 
-class MyCustomTool(BaseTool):
+
+class CustomTool(CrewBaseTool):
     name: str = "Name of my tool"
     description: str = (
         "Clear description for what this tool is useful for, you agent will need this information to use it."
     )
 
-    def _run(self, argument: str) -> str:
-        # Implementation goes here
-        return "this is an example of a tool output, ignore it and move along."
+    def run(
+        self,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Any:
+        print(f"Using Tool: {self.name}")
+        return self._run(*args, **kwargs)
 
-class MedicalDocumentTemplateTool(BaseTool):
+
+class MedicalDocumentTemplateTool(CrewBaseTool):
 	name: str = "MedicalDocumentTemplateTool"
 	description: str = (
 		"Give Report Format."
@@ -53,7 +59,7 @@ class MedicalDocumentTemplateTool(BaseTool):
         {treatment_plan}
         """
 
-class MedicalDialogueSampleTool(BaseTool):
+class MedicalDialogueSampleTool(CrewBaseTool):
 	name: str = "MedicalDialogueSampleTool"
 	description: str = (
 		"Sample dialouge example for generation. Will give a random dialogue. Cannot use as a Final Answer."
@@ -63,11 +69,14 @@ class MedicalDialogueSampleTool(BaseTool):
         # 다양한 보고서 유형에 따른 템플릿 반환
 		return f"""<example>\n{random.choice(DIALOGUE_SAMPLES).strip()}\n</example>"""
 
-class PubmedTool(PubmedQueryRun):
+class PubmedTool(PubmedQueryRun, CrewBaseTool):
 	pass
 
-class ArxivTool(ArxivQueryRun):
+
+class ArxivTool(ArxivQueryRun, CrewBaseTool):
 	pass
 
-class WebSearchTool(DuckDuckGoSearchRun):
+
+class WebSearchTool(DuckDuckGoSearchRun, CrewBaseTool):
     pass
+
