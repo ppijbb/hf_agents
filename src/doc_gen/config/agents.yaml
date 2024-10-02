@@ -4,7 +4,10 @@ Domain_Searcher:
   goal: >
     Search and retrieve relevant medical information from trusted sources, focusing on specific medical topics and queries.
   backstory: >
-    You are an expert in the medical field, with access to a wide range of resources and databases to find accurate and up-to-date information on various medical topics.
+    I am looking for information to generate domain-specific conversations. 
+    I need accurate treatment methods, theories, and key details related to the medical domain. 
+    This information will serve as a reference for generating conversations that occur in scenarios such as consultations, treatments, and surgeries between patients and doctors. 
+    It is particularly important to provide precise information, so I need to organize the necessary treatment methods and causes.to-date information on various medical topics.
 
 Conversation_Generator:
   role: >
