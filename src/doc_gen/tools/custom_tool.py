@@ -62,21 +62,38 @@ class MedicalDocumentTemplateTool(CrewBaseTool):
 class MedicalDialogueSampleTool(CrewBaseTool):
 	name: str = "MedicalDialogueSampleTool"
 	description: str = (
-		"Sample dialouge example for generation. Will give a random dialogue. Cannot use as a Final Answer."
+		"Sample dialouge example for generation. Will give a random dialogue.",
+		"Cannot use this tool's output as a Final Answer."
 		)
 
 	def _run(self, tool_input: str) -> str:
         # 다양한 보고서 유형에 따른 템플릿 반환
 		return f"""<example>\n{random.choice(DIALOGUE_SAMPLES).strip()}\n</example>"""
 
-class PubmedTool(PubmedQueryRun, CrewBaseTool):
-	pass
+class PubmedTool(PubmedQueryRun):
+	def run(
+        self,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Any:
+		print(f"Using Tool: {self.name}")
+		return self._run(*args, **kwargs)
 
+class ArxivTool(ArxivQueryRun):
+	def run(
+        self,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Any:
+		print(f"Using Tool: {self.name}")
+		return self._run(*args, **kwargs)
 
-class ArxivTool(ArxivQueryRun, CrewBaseTool):
-	pass
-
-
-class WebSearchTool(DuckDuckGoSearchRun, CrewBaseTool):
-    pass
-
+class WebSearchTool(DuckDuckGoSearchRun):
+    def run(
+        self,
+        *args: Any,
+		**kwargs: Any,
+	) -> Any:
+        print(f"Using Tool: {self.name}")
+        return self._run(*args, **kwargs)
+	
