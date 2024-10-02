@@ -1,5 +1,20 @@
 import random
 from crewai_tools import BaseTool
+from crewai_tools import (SerperDevTool, ScrapeWebsiteTool, DallETool,
+                          WebsiteSearchTool, SeleniumScrapingTool, tool)
+from crewai_tools.tools.base_tool import BaseTool as CrewBaseTool
+from crewai.tasks.task_output import TaskOutput
+from crewai.tasks.conditional_task import ConditionalTask
+
+from langchain_community.tools import (WikipediaQueryRun, PubmedQueryRun,
+                                       YouTubeSearchTool, OpenWeatherMapQueryRun)
+from langchain_community.utilities import SearxSearchWrapper
+from langchain_community.tools import DuckDuckGoSearchRun, SearxSearchRun
+from langchain_community.agent_toolkits.jira.toolkit import JiraToolkit
+from langchain_community.agent_toolkits.github.toolkit import GitHubToolkit
+from langchain_community.tools.arxiv.tool import ArxivQueryRun
+from langchain_community.tools.google_trends.tool import GoogleTrendsQueryRun
+from langchain_community.utilities.google_trends import GoogleTrendsAPIWrapper
 from src.doc_gen.tools.tool_data import DIALOGUE_SAMPLES
 
 class MyCustomTool(BaseTool):
@@ -47,3 +62,12 @@ class MedicalDialogueSampleTool(BaseTool):
 	def _run(self, tool_input: str) -> str:
         # 다양한 보고서 유형에 따른 템플릿 반환
 		return f"""<example>\n{random.choice(DIALOGUE_SAMPLES).strip()}\n</example>"""
+
+class PubmedTool(PubmedQueryRun):
+	pass
+
+class ArxivTool(ArxivQueryRun):
+	pass
+
+class WebSearchTool(DuckDuckGoSearchRun):
+    pass
