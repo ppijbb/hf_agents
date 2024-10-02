@@ -8,6 +8,8 @@ authors = ["Your Name <you@example.com>"]
 python = ">=3.10,<=3.13"
 crewai = { extras = ["tools"], version = ">=0.63.2,<1.0.0" }
 annotated-types = "^0.7.0"
+xmltodict = "^0.13.0"
+duckduckgo-search = "^6.2.13"
 
 
 [tool.poetry.scripts]

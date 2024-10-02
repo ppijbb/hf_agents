@@ -1025,6 +1025,25 @@ files = [
 ]
 
 [[package]]
+name = "duckduckgo-search"
+version = "6.2.13"
+description = "Search for words, documents, images, news, maps and text translation using the DuckDuckGo.com search engine."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "duckduckgo_search-6.2.13-py3-none-any.whl", hash = "sha256:a6618fb2744fa1d081b1bf2e47ef8051de993276a15c20f4e879a150726472de"},
+    {file = "duckduckgo_search-6.2.13.tar.gz", hash = "sha256:f89a9782f0f47d18c01a761c83453d0aef7a4335d1b6466fc47709652d5ca791"},
+]
+
+[package.dependencies]
+click = ">=8.1.7"
+primp = ">=0.6.3"
+
+[package.extras]
+dev = ["mypy (>=1.11.1)", "pytest (>=8.3.1)", "pytest-asyncio (>=0.23.8)", "ruff (>=0.6.1)"]
+lxml = ["lxml (>=5.2.2)"]
+
+[[package]]
 name = "dulwich"
 version = "0.21.7"
 description = "Python Git Library"
@@ -3943,6 +3962,26 @@ sentry = ["django", "sentry-sdk"]
 test = ["coverage", "django", "flake8", "freezegun (==0.3.15)", "mock (>=2.0.0)", "pylint", "pytest", "pytest-timeout"]
 
 [[package]]
+name = "primp"
+version = "0.6.3"
+description = "HTTP client that can impersonate web browsers, mimicking their headers and `TLS/JA3/JA4/HTTP2` fingerprints"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "primp-0.6.3-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:bdbe6a7cdaaf5c9ed863432a941f4a75bd4c6ff626cbc8d32fc232793c70ba06"},
+    {file = "primp-0.6.3-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:eeb53eb987bdcbcd85740633470255cab887d921df713ffa12a36a13366c9cdb"},
+    {file = "primp-0.6.3-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:78da53d3c92a8e3f05bd3286ac76c291f1b6fe5e08ea63b7ba92b0f9141800bb"},
+    {file = "primp-0.6.3-cp38-abi3-manylinux_2_34_aarch64.whl", hash = "sha256:86337b44deecdac752bd8112909987fc9fa9b894f30191c80a164dc8f895da53"},
+    {file = "primp-0.6.3-cp38-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:d3cd9a22b97f3eae42b2a5fb99f00480daf4cd6d9b139e05b0ffb03f7cc037f3"},
+    {file = "primp-0.6.3-cp38-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:7732bec917e2d3c48a31cdb92e1250f4ad6203a1aa4f802bd9abd84f2286a1e0"},
+    {file = "primp-0.6.3-cp38-abi3-win_amd64.whl", hash = "sha256:1e4113c34b86c676ae321af185f03a372caef3ee009f1682c2d62e30ec87348c"},
+    {file = "primp-0.6.3.tar.gz", hash = "sha256:17d30ebe26864defad5232dbbe1372e80483940012356e1f68846bb182282039"},
+]
+
+[package.extras]
+dev = ["certifi", "pytest (>=8.1.1)"]
+
+[[package]]
 name = "proto-plus"
 version = "1.24.0"
 description = "Beautiful, Pythonic protocol buffers."
@@ -6231,6 +6270,17 @@ cffi = ">=1.16.0"
 test = ["pytest"]
 
 [[package]]
+name = "xmltodict"
+version = "0.13.0"
+description = "Makes working with XML feel like you are working with JSON"
+optional = false
+python-versions = ">=3.4"
+files = [
+    {file = "xmltodict-0.13.0-py2.py3-none-any.whl", hash = "sha256:aa89e8fd76320154a40d19a0df04a4695fb9dc5ba977cbb68ab3e4eb225e7852"},
+    {file = "xmltodict-0.13.0.tar.gz", hash = "sha256:341595a488e3e01a85a9d8911d8912fd922ede5fecc4dce437eb4b6c8d037e56"},
+]
+
+[[package]]
 name = "yarl"
 version = "1.12.1"
 description = "Yet another URL library"
@@ -6357,4 +6407,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<=3.13"
-content-hash = "934fc621d9da94519bf45921dc706c8c4829a7c3ebed7ac325de9a39fecc35d8"
+content-hash = "1a3ea43656fe9f782eb383b3172bb8470e9b5ef633ebc2acc02fe991680a900a"
