@@ -17,7 +17,7 @@ from vllm.entrypoints.openai.protocol import (
     ErrorResponse,
 )
 from vllm.entrypoints.openai.serving_chat import OpenAIServingChat
-from vllm.entrypoints.openai.serving_engine import LoRAModulePath, PromptAdapterPath
+from vllm.entrypoints.openai.serving_engine import LoRAModulePath, PromptAdapterPath, BaseModelPath
 from vllm.utils import FlexibleArgumentParser
 from vllm.entrypoints.logger import RequestLogger
 
@@ -72,15 +72,17 @@ class VLLMDeployment:
         if not self.openai_serving_chat:
             model_config = await self.engine.get_model_config()
             # Determine the name of the served model for the OpenAI client.
+            base_model_path = BaseModelPath(name=self.engine_args.model,
+                                            model_path=self.engine_args.model)
             if self.engine_args.served_model_name is not None:
-                served_model_names = self.engine_args.served_model_name
+                served_model_names = base_model_path # self.engine_args.served_model_name
             else:
-                served_model_names = [self.engine_args.model]
+                served_model_names = [base_model_path] # [self.engine_args.model]
             self.openai_serving_chat = OpenAIServingChat(
-                self.engine,
-                model_config,
-                served_model_names,
-                self.response_role,
+                engine_client=self.engine,
+                model_config=model_config,
+                base_model_paths=served_model_names,
+                response_role=self.response_role,
                 lora_modules=self.lora_modules,
                 prompt_adapters=self.prompt_adapters,
                 request_logger=self.request_logger,
@@ -90,7 +92,9 @@ class VLLMDeployment:
         generator = await self.openai_serving_chat.create_chat_completion(
             request, raw_request
         )
+        print(93, generator)
         if isinstance(generator, ErrorResponse):
+            logging.error(f"Error response: {generator}")
             return JSONResponse(
                 content=generator.model_dump(), status_code=generator.code
             )

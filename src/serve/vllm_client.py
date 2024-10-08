@@ -8,7 +8,7 @@ client = OpenAI(
     api_key="NOT A REAL KEY",
 )
 chat_completion = client.chat.completions.create(
-    model="NousResearch/Meta-Llama-3-8B-Instruct",
+    model="Gunulhona/Hermes-Llama-Merge",
     messages=[
         {"role": "system", "content": "You are a helpful assistant."},
         {

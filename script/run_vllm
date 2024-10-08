@@ -1,7 +1,9 @@
-cd src/serve && \
-poetry run \
-    serve run vllm_serve:build_app \
-        model="Gunulhona/Hermes-Llama-Merge" \
-        accelerator="GPU" \
+# RAY_DEDUP_LOGS=0 &&\
+cd src/serve &&\
+poetry run\
+    serve run vllm_serve:build_app\
+        model="Gunulhona/Hermes-Llama-Merge"\
+        accelerator="GPU"\
         dtype="float16"\
-        gpu_memory_utilization=0.95
+        gpu_memory_utilization=0.95\
+        max_model_len=4096
