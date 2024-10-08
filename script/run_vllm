@@ -1,0 +1,4 @@
+poetry run \
+    serve run src/serve/vllm_serve:build_app \
+        model="Gunulhona/Gemma-Ko-Merge" \
+        accelerate="GPU"
