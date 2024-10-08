@@ -24,7 +24,8 @@ from vllm.entrypoints.logger import RequestLogger
 os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = "0"
 os.environ["VLLM_CPU_KVCACHE_SPACE"] = "5"
 os.environ["VLLM_CPU_OMP_THREADS_BIND"] = "0-29"
-
+os.environ["RAY_DEDUP_LOGS"] = "0" 
+os.environ["VLLM_ATTENTION_BACKEND"] = "XFORMERS"
 
 logger = logging.getLogger("ray.serve")
 

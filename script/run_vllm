@@ -1,4 +1,3 @@
-# RAY_DEDUP_LOGS=0 &&\
 cd src/serve &&\
 poetry run\
     serve run vllm_serve:build_app\
