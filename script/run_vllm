@@ -1,4 +1,7 @@
+cd src/serve && \
 poetry run \
-    serve run src/serve/vllm_serve:build_app \
-        model="Gunulhona/Gemma-Ko-Merge" \
-        accelerate="GPU"
+    serve run vllm_serve:build_app \
+        model="Gunulhona/Hermes-Llama-Merge" \
+        accelerator="GPU" \
+        dtype="float16"\
+        gpu_memory_utilization=0.95
