@@ -14,13 +14,22 @@ from crewai_tools import SerperDevTool
 local_llm1 = "ollama/qwen2.5:latest"
 # local_llm2 = "ollama/Gemma-Ko-Merge:latest"
 
-local_llm2 = LLM(
-	model="ollama/Gemma-Ko-Merge:latest",
-	temperature=0.5,
-	max_tokens=8129,
-	base_url="http://localhost:11434",
-)
+# ollama engine
+# local_llm2 = LLM(
+# 	model="ollama/Gemma-Ko-Merge:latest",
+# 	temperature=0.5,
+# 	max_tokens=8129,
+# 	base_url="http://localhost:11434",
+# )
 
+# vLLM engine
+local_llm2 = LLM(
+	model="openai/Gunulhona/Hermes-Llama-Merge",
+	temperature=0.5,
+	max_tokens=2048,
+	base_url="http://localhost:8000/v1",
+ 	api_key="NOT A REAL KEY",
+)
 #TODO 1: 치의학 상황에 대한 대화 발생시키는 task, 이를 위한 tools
 #TODO 2: 대화 요약 및 인텐트 분석하는 task
 #TODO 3: 의학 보고서 작성하는 task
