@@ -57,8 +57,8 @@ def run():
     # asyncio.run(
     #     DocGenCrew().crew().kickoff_async(
     #         inputs=inputs))
-    # while True:
-    DocGenCrew().crew().kickoff(inputs=inputs)
+    while True:
+        DocGenCrew().crew().kickoff(inputs=inputs)
 
 @log_execution_time
 def train():

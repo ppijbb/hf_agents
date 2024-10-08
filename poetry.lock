@@ -3776,6 +3776,16 @@ files = [
 ]
 
 [[package]]
+name = "msgpack-python"
+version = "0.5.6"
+description = "MessagePack (de)serializer."
+optional = false
+python-versions = "*"
+files = [
+    {file = "msgpack-python-0.5.6.tar.gz", hash = "sha256:378cc8a6d3545b532dfd149da715abae4fda2a3adb6d74e525d0d5e51f46909b"},
+]
+
+[[package]]
 name = "msgspec"
 version = "0.18.6"
 description = "A fast serialization and validation library, with builtin support for JSON, MessagePack, YAML, and TOML."
@@ -8693,4 +8703,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10, <=3.13"
-content-hash = "5ff01538c93f6ba280954b97180130de1b84c4a4affd9ca14f70400188d64df8"
+content-hash = "c5557bce3baadbc4ee3c62625a26dcc28281bad9cb09c0027482936d053d4aa9"
