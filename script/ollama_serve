@@ -1,21 +1,21 @@
 !/bin/bash
 
-# export OLLAMA_DEBUG="1"                 # Show additional debug information (e.g. OLLAMA_DEBUG=1)
-# export OLLAMA_HOST="127.0.0.1:11434"    # IP Address for the ollama server (default 127.0.0.1:11434)
-# export OLLAMA_KEEP_ALIVE="5m"           # The duration that models stay loaded in memory (default "5m")
-# export OLLAMA_MAX_LOADED_MODELS="5"     # Maximum number of loaded models per GPU
-# export OLLAMA_MAX_QUEUE                 # Maximum number of queued requests
-# export OLLAMA_MODELS                    # The path to the models directory
-export OLLAMA_NUM_PARALLEL="4"            # Maximum number of parallel requests
-# export OLLAMA_NOPRUNE                   # Do not prune model blobs on startup
-# export OLLAMA_ORIGINS                   # A comma separated list of allowed origins
-# export OLLAMA_SCHED_SPREAD              # Always schedule model across all GPUs
-# export OLLAMA_TMPDIR                    # Location for temporary files
-export OLLAMA_FLASH_ATTENTION="1"         # Enabled flash attention
-# export OLLAMA_LLM_LIBRARY               # Set LLM library to bypass autodetection
-# export OLLAMA_GPU_OVERHEAD              # Reserve a portion of VRAM per GPU (bytes)
-# export OLLAMA_LOAD_TIMEOUT              # How long to allow model loads to stall before giving up (default "5m")
-export OLLAMA_NUM_THREADS=32              # Number of threads per model 
+# export OLLAMA_DEBUG="1"                                    # Show additional debug information (e.g. OLLAMA_DEBUG=1)
+# export OLLAMA_HOST="127.0.0.1:11434"                       # IP Address for the ollama server (default 127.0.0.1:11434)
+# export OLLAMA_KEEP_ALIVE="5m"                              # The duration that models stay loaded in memory (default "5m")
+# export OLLAMA_MAX_LOADED_MODELS="5"                        # Maximum number of loaded models per GPU
+# export OLLAMA_MAX_QUEUE                                    # Maximum number of queued requests
+# export OLLAMA_MODELS                                       # The path to the models directory
+export OLLAMA_NUM_PARALLEL="4"                               # Maximum number of parallel requests
+# export OLLAMA_NOPRUNE                                      # Do not prune model blobs on startup
+# export OLLAMA_ORIGINS                                      # A comma separated list of allowed origins
+# export OLLAMA_SCHED_SPREAD                                 # Always schedule model across all GPUs
+export OLLAMA_TMPDIR="/home/work/conan/.ollama"              # Location for temporary files
+export OLLAMA_FLASH_ATTENTION="1"                            # Enabled flash attention
+# export OLLAMA_LLM_LIBRARY                                  # Set LLM library to bypass autodetection
+# export OLLAMA_GPU_OVERHEAD                                 # Reserve a portion of VRAM per GPU (bytes)
+# export OLLAMA_LOAD_TIMEOUT                                 # How long to allow model loads to stall before giving up (default "5m")
+export OLLAMA_NUM_THREADS=32                                 # Number of threads per model 
 
 
 ollama serve
