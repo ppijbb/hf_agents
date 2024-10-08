@@ -30,6 +30,7 @@ torchaudio = {version = "^2.4.0+cu121", source = "torch"}
 ray = {extras = ["serve"], version = "^2.37.0"}
 intake = "^2.0.7"
 msgpack = "^1.0.7"
+asgi-lifespan = "^2.1.0"
 
 [[tool.poetry.source]]
 name = "torch"
