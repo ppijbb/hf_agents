@@ -1,6 +1,6 @@
 #!/bin/bash
-
+VLLM_MODEL=meta-llama/Llama-3.2-1B-Instruct
 echo model will change to "$VLLM_MODEL"....;
 
-tmux send -t serve `export VLLM_MODEL=$VLLM_MODEL ENTER`;
-tmux send -t agent `export VLLM_MODEL=$VLLM_MODEL ENTER`;
+tmux send -t serve.0 "export VLLM_MODEL=$VLLM_MODEL" ENTER;
+tmux send -t agent.0 "export VLLM_MODEL=$VLLM_MODEL" ENTER;
