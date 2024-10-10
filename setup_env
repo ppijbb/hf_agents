@@ -1,0 +1,13 @@
+!/bin/bash
+
+export HF_HOME=/home/work/conan/.cache/hf
+
+sudo apt update && sudo apt install tmux
+
+curl -fsSL https://ollama.com/install.sh | sh
+
+pip install poetry
+poetry lock && poetry install
+
+# pip install deepspeed-kernels
+# DS_BUILD_OPS=1 pip install deepspeed --global-option="build_ext" --global-option="-j8"
