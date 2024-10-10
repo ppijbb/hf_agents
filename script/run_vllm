@@ -1,12 +1,13 @@
+#!/bin/bash
+
 cd src/serve &&\
 MAX_JOBS=8 poetry run\
     serve run vllm_serve:build_app\
-        model="Gunulhona/Hermes-Llama-Merge"\
+        model=$VLLM_MODEL\
         accelerator="GPU"\
         dtype="float16"\
         gpu_memory_utilization=0.95\
-        max_model_len=4096\
-        max_num_batched_tokens=4096
+        max_model_len=8192
        
 
 # usage: vllm serve [-h] [--model MODEL] [--tokenizer TOKENIZER]

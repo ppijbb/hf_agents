@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo model will change to "$VLLM_MODEL"....;
+
+tmux send -t serve `export VLLM_MODEL=$VLLM_MODEL ENTER`;
+tmux send -t agent `export VLLM_MODEL=$VLLM_MODEL ENTER`;
