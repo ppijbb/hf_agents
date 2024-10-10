@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 export HF_HOME=/home/work/conan/.cache/hf
 
