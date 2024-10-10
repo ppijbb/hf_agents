@@ -43,18 +43,18 @@ class MedicalDocumentTemplateTool(CrewBaseTool):
         # 다양한 보고서 유형에 따른 템플릿 반환
 		return """
         # Medical Report
-        
+
         ## Patient Information
         - Name: {name}
         - Age: {age}
         - Gender: {gender}
-        
+
         ## Chief Complaint
         {chief_complaint}
-        
+
         ## Diagnosis
         {diagnosis}
-        
+
         ## Treatment Plan
         {treatment_plan}
         """
@@ -71,29 +71,25 @@ class MedicalDialogueSampleTool(CrewBaseTool):
 		return f"""<example>\n{random.choice(DIALOGUE_SAMPLES).strip()}\n</example>"""
 
 class PubmedTool(PubmedQueryRun):
-	def run(
+    def run(
         self,
-        *args: Any,
-        **kwargs: Any,
-    ) -> Any:
-		print(f"Using Tool: {self.name}")
-		return self._run(*args, **kwargs)
+        *args:Any,
+		**kwargs: Any) -> Any:
+        print(f"Using Tool: {self.name}")
+        return self._run(*args,)
 
 class ArxivTool(ArxivQueryRun):
-	def run(
+    def run(
         self,
-        *args: Any,
-        **kwargs: Any,
-    ) -> Any:
-		print(f"Using Tool: {self.name}")
-		return self._run(*args, **kwargs)
+        *args:Any,
+		**kwargs: Any) -> Any:
+        print(f"Using Tool: {self.name}")
+        return self._run(*args,)
 
 class WebSearchTool(DuckDuckGoSearchRun):
     def run(
         self,
-        *args: Any,
-		**kwargs: Any,
-	) -> Any:
+        *args:Any,
+		**kwargs: Any) -> Any:
         print(f"Using Tool: {self.name}")
-        return self._run(*args, **kwargs)
-	
+        return self._run(*args,)

@@ -93,7 +93,6 @@ class VLLMDeployment:
         generator = await self.openai_serving_chat.create_chat_completion(
             request, raw_request
         )
-        print(93, generator)
         if isinstance(generator, ErrorResponse):
             logging.error(f"Error response: {generator}")
             return JSONResponse(

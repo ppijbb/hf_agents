@@ -1,4 +1,5 @@
 import random
+import os
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import DOCXSearchTool
@@ -24,7 +25,7 @@ local_llm1 = "ollama/qwen2.5:latest"
 
 # vLLM engine
 local_llm2 = LLM(
-	model="openai/Gunulhona/Hermes-Llama-Merge",
+	model=f"openai/{os.getenv('VLLM_MODEL')}",
 	temperature=0.5,
 	max_tokens=2048,
 	base_url="http://localhost:8000/v1",
