@@ -25,11 +25,11 @@ local_llm1 = "ollama/qwen2.5:latest"
 
 # vLLM engine
 local_llm2 = LLM(
-	model=f"openai/{os.getenv('VLLM_MODEL')}",
+	model=f"ollama/{os.getenv('VLLM_MODEL')}",
 	temperature=0.5,
 	max_tokens=2048,
-	base_url="http://localhost:8000/v1",
- 	api_key="NOT A REAL KEY",
+	# base_url="http://localhost:8000/v1",
+ 	# api_key="NOT A REAL KEY",
 )
 #TODO 1: 치의학 상황에 대한 대화 발생시키는 task, 이를 위한 tools
 #TODO 2: 대화 요약 및 인텐트 분석하는 task
