@@ -1,10 +1,10 @@
 # ollama run  qwen2.5:latest
 # ollama run llama3.2:latest
 
-MODEL_NAME=Gemma-Ko-Merge
+MODEL_NAME=Gemma-Med-Merge
 
 # python llama.cpp/convert_hf_to_gguf.py sample \
 #     --outfile sample/${MODEL_NAME}.gguf\
 #     --outtype q8_0
 
-ollama create ${MODEL_NAME} -f sample/Modelfile
+ollama create ${MODEL_NAME} -f sample/med/Modelfile
