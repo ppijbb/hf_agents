@@ -71,12 +71,24 @@ class MedicalDialogueSampleTool(CrewBaseTool):
 		return f"""<example>\n{random.choice(DIALOGUE_SAMPLES).strip()}\n</example>"""
 
 class PubmedTool(PubmedQueryRun):
+    
+    def _check_query(self,
+                     query: str) -> bool:
+        if isinstance(query, dict):
+            if "query" in query:
+                if isinstance(query["query"], dict):
+                    if "title" in query["query"]:
+                        query["query"] = query["query"]["title"]
+        return query
+    
     def run(
         self,
         *args:Any,
 		**kwargs: Any) -> Any:
         print(f"Using Tool: {self.name}")
-        return self._run(*args,)
+        fixed_args = [self._check_query(q) for q in args]
+        # print(fixed_args)
+        return self._run(**fixed_args[0],)
 
 class ArxivTool(ArxivQueryRun):
     def run(
