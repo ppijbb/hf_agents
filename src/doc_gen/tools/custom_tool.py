@@ -70,8 +70,16 @@ class MedicalDialogueSampleTool(CrewBaseTool):
         # 다양한 보고서 유형에 따른 템플릿 반환
 		return f"""<example>\n{random.choice(DIALOGUE_SAMPLES).strip()}\n</example>"""
 
-class PubmedTool(PubmedQueryRun):
-    
+class QueryProcessor:
+    def _check_query(self,
+                     query: str) -> bool:
+        if isinstance(query, dict):
+            if "query" in query:
+                if isinstance(query["query"], dict):
+                    if "title" in query["query"]:
+                        query["query"] = query["query"]["title"]
+
+class PubmedTool(PubmedQueryRun, QueryProcessor):
     def _check_query(self,
                      query: str) -> bool:
         if isinstance(query, dict):
@@ -87,10 +95,10 @@ class PubmedTool(PubmedQueryRun):
 		**kwargs: Any) -> Any:
         print(f"Using Tool: {self.name}")
         fixed_args = [self._check_query(q) for q in args]
-        # print(fixed_args)
+        print(fixed_args)
         return self._run(**fixed_args[0],)
 
-class ArxivTool(ArxivQueryRun):
+class ArxivTool(ArxivQueryRun, QueryProcessor):
     def run(
         self,
         *args:Any,
@@ -98,7 +106,7 @@ class ArxivTool(ArxivQueryRun):
         print(f"Using Tool: {self.name}")
         return self._run(*args,)
 
-class WebSearchTool(DuckDuckGoSearchRun):
+class WebSearchTool(DuckDuckGoSearchRun, QueryProcessor):
     def run(
         self,
         *args:Any,
