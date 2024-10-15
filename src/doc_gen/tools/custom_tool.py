@@ -17,6 +17,12 @@ from langchain_community.tools.google_trends.tool import GoogleTrendsQueryRun
 from langchain_community.utilities.google_trends import GoogleTrendsAPIWrapper
 from src.doc_gen.tools.tool_data import DIALOGUE_SAMPLES
 
+from pydantic import BaseModel, Field
+
+
+class CrewQuery(BaseModel):
+    query: str = Field(...)
+
 
 class CustomTool(CrewBaseTool):
     name: str = "Name of my tool"

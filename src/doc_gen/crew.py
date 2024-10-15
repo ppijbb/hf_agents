@@ -7,7 +7,7 @@ from langchain_community.llms import Ollama
 
 # Uncomment the following line to use an example of a custom tool
 from src.doc_gen.tools.custom_tool import (MedicalDocumentTemplateTool, MedicalDialogueSampleTool, 
-										   WebSearchTool, PubmedTool, ArxivTool)
+										   WebSearchTool, PubmedTool, ArxivTool, CrewQuery)
 # Check our tools documentations for more information on how to use them
 from crewai_tools import SerperDevTool
 
@@ -44,7 +44,7 @@ class DocGenCrew():
 	def domain_searcher(self) -> Agent:
 		return Agent(
 			config=self.agents_config['Domain_Searcher'],
-			tools=[PubmedTool(), WebSearchTool()], # Example of custom tool, loaded on the beginning of file
+			tools=[PubmedTool(args_schema=CrewQuery), WebSearchTool()], # Example of custom tool, loaded on the beginning of file
 			verbose=True,
 			llm=local_llm2
 		)
