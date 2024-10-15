@@ -1,8 +1,8 @@
 domain_searching_task:
   description: >
-    Search for domain-specific information related to the medical field, focusing on the latest medical guidelines, treatment protocols, and research papers pertinent to the specified medical scenarios. 
-    The search results should be relevant, up-to-date, and provide accurate details that can aid in generating conversations for consultations, treatments, and surgeries between patients and doctors.
-    Find the domain specific infomations that takes place during {situation} in the {department} at {date}.
+    Search for domain-specific information related to the medical field, focusing on the latest medical guidelines, treatment protocols, and research papers pertinent to the specified medical scenarios.
+    Search results should be relevant, specific, and provide real-world treatment cases that can help generate conversations for consultation, treatment, and surgery between patients and physicians.
+    Find the domain specific infomations that takes place during {situation} in the {department} at {date}.    
   expected_output: >
     Found threatement method text.(target language: korean)
   agent: domain_searcher
@@ -14,7 +14,7 @@ conversation_generation_task:
     The wording of the conversation uses tone like native korean in real situations.
     Create a conversation that takes place during {situation} in the {department} at {date}.
   expected_output: >
-    A dialogue script without transcription.(target language: korean only)
+    A dialogue script .txt(target language: korean only)
     <example>
     의사 : ..... (dental domain korean natural conversation)
     환자 : ..... (dental domain korean natural conversation)
