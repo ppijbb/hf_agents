@@ -31,7 +31,7 @@ ray = { extras = ["serve"], version = "^2.37.0" }
 intake = "^2.0.7"
 msgpack = "^1.0.7"
 asgi-lifespan = "^2.1.0"
-flash-attn = "^2.6.3"
+# flash-attn = "^2.6.3"
 flashinfer = { version = "^0.1.6", source = "flashinfer" }
 
 [[tool.poetry.source]]
