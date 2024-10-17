@@ -44,7 +44,7 @@ class DocGenCrew():
 	def domain_searcher(self) -> Agent:
 		return Agent(
 			config=self.agents_config['Domain_Searcher'],
-			tools=[PubmedTool(args_schema=CrewQuery), WebSearchTool()], # Example of custom tool, loaded on the beginning of file
+			tools=[PubmedTool(), WebSearchTool()], # Example of custom tool, loaded on the beginning of file
 			verbose=True,
 			llm=local_llm2
 		)
