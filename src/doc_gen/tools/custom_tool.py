@@ -90,6 +90,7 @@ class PubmedTool(QueryProcessor, CrewBaseTool):
     runnable_tool: LangBaseTool | CrewBaseTool = PubmedQueryRun()
     name:str = runnable_tool.name
     description:str = runnable_tool.description
+    args_schema: Type[BaseModel] = CrewQuery
     
     def _run(
         self,
@@ -98,29 +99,32 @@ class PubmedTool(QueryProcessor, CrewBaseTool):
         print(f"Using Tool: {self.name}")
         # fixed_args = [self._check_query(q) for q in args]
         # print(fixed_args)
-        return self.runnalbe_tool(*args,) # **fixed_args[0],
+        print(101, args[0])
+        return self.runnalbe_tool(*args, **kwargs) # **fixed_args[0],
 
 class ArxivTool(QueryProcessor, CrewBaseTool):
     runnable_tool: LangBaseTool | CrewBaseTool = ArxivQueryRun()
     name:str = runnable_tool.name
     description:str = runnable_tool.description
-    
+    args_schema: Type[BaseModel] = CrewQuery
+
     def _run(
         self,
         *args:Any,
 		**kwargs: Any) -> Any:
         print(f"Using Tool: {self.name}")
-        return self.runnalbe_tool(*args,)
+        return self.runnalbe_tool(*args, **kwargs)
 
 class WebSearchTool(QueryProcessor, CrewBaseTool):
     runnable_tool: LangBaseTool | CrewBaseTool = DuckDuckGoSearchRun()
     name:str = runnable_tool.name
     description :str= runnable_tool.description
-    
+    args_schema: Type[BaseModel] = CrewQuery
+
     def _run(
         self,
         *args:Any,
 		**kwargs: Any) -> Any:
         print(f"Using Tool: {self.name}")
-        return self.runnalbe_tool(*args,)
+        return self.runnalbe_tool(*args, **kwargs)
 
