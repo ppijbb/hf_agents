@@ -85,37 +85,32 @@ class QueryProcessor:
                     if "title" in query["query"]:
                         query["query"] = query["query"]["title"]
 
-class PubmedTool(PubmedQueryRun, QueryProcessor):
-    def _check_query(self,
-                     query: str) -> bool:
-        if isinstance(query, dict):
-            if "query" in query:
-                if isinstance(query["query"], dict):
-                    if "title" in query["query"]:
-                        query["query"] = query["query"]["title"]
-        return query
-    
+class PubmedTool(QueryProcessor):
+    runnable_tool = PubmedQueryRun()
     def run(
         self,
         *args:Any,
 		**kwargs: Any) -> Any:
         print(f"Using Tool: {self.name}")
-        fixed_args = [self._check_query(q) for q in args]
-        print(fixed_args)
-        return self._run(**fixed_args[0],)
+        # fixed_args = [self._check_query(q) for q in args]
+        # print(fixed_args)
+        return self.runnalbe_tool(*args,) # **fixed_args[0],
 
-class ArxivTool(ArxivQueryRun, QueryProcessor):
+class ArxivTool(QueryProcessor):
+    runnable_tool = ArxivQueryRun()
     def run(
         self,
         *args:Any,
 		**kwargs: Any) -> Any:
         print(f"Using Tool: {self.name}")
-        return self._run(*args,)
+        return self.runnalbe_tool(*args,)
 
-class WebSearchTool(DuckDuckGoSearchRun, QueryProcessor):
+class WebSearchTool(QueryProcessor):
+    runnable_tool = DuckDuckGoSearchRun()
     def run(
         self,
         *args:Any,
 		**kwargs: Any) -> Any:
         print(f"Using Tool: {self.name}")
-        return self._run(*args,)
+        return self.runnalbe_tool(*args,)
+
