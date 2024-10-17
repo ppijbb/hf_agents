@@ -1,10 +1,14 @@
 domain_searching_task:
   description: >
-    Search for domain-specific information related to the medical field, focusing on the latest medical guidelines, treatment protocols, and research papers pertinent to the specified medical scenarios.
+    Search for domain-specific information related to the medical field, focusing on the latest therapies, medical treatment protocols, and research papers pertinent to the specified medical scenarios.
     Search results should be relevant, specific, and provide real-world treatment cases that can help generate conversations for consultation, treatment, and surgery between patients and physicians.
-    Find the domain specific infomations that takes place during {situation} in the {department} at {date}.    
+    step 1:
+    - Define the domain specific situation that takes place during {situation} in the {department} at {date}.
+    step 2:
+    - Search for the latest medical guidelines, treatment protocols, and research papers related to the specified medical scenario.
+
   expected_output: >
-    Found threatement method text.(target language: korean)
+    Found threatement procedure note.
   agent: domain_searcher
 
 conversation_generation_task:
