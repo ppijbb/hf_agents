@@ -18,12 +18,20 @@ from langchain_community.tools.google_trends.tool import GoogleTrendsQueryRun
 from langchain_community.utilities.google_trends import GoogleTrendsAPIWrapper
 from src.doc_gen.tools.tool_data import DIALOGUE_SAMPLES
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class CrewQuery(BaseModel):
     query: str = Field(...)
-
+    
+    @field_validator("query", mode="before")
+    @classmethod
+    def dict_to_str(cls, v) -> str:
+        print(v)
+        if isinstance(v, dict):
+            if "query" in v:
+                v = v["query"]
+        return str(v["title"]) if isinstance(v, dict) else str(v)
 
 class CustomTool(CrewBaseTool):
     name: str = "Name of my tool"
@@ -92,15 +100,12 @@ class PubmedTool(QueryProcessor, CrewBaseTool):
     description:str = runnable_tool.description
     args_schema: Type[BaseModel] = CrewQuery
     
-    def _run(
-        self,
-        *args:Any,
-		**kwargs: Any) -> Any:
+    def _run(self, query:Any, callbacks=None, *args, **kwargs) -> Any:
         print(f"Using Tool: {self.name}")
         # fixed_args = [self._check_query(q) for q in args]
         # print(fixed_args)
         print(101, args[0])
-        return self.runnalbe_tool(*args, **kwargs) # **fixed_args[0],
+        return self.runnalbe_tool.run(query)
 
 class ArxivTool(QueryProcessor, CrewBaseTool):
     runnable_tool: LangBaseTool | CrewBaseTool = ArxivQueryRun()
@@ -108,12 +113,9 @@ class ArxivTool(QueryProcessor, CrewBaseTool):
     description:str = runnable_tool.description
     args_schema: Type[BaseModel] = CrewQuery
 
-    def _run(
-        self,
-        *args:Any,
-		**kwargs: Any) -> Any:
+    def _run(self, query:Any, callbacks=None, *args, **kwargs) -> Any:
         print(f"Using Tool: {self.name}")
-        return self.runnalbe_tool(*args, **kwargs)
+        return self.runnalbe_tool.run(query)
 
 class WebSearchTool(QueryProcessor, CrewBaseTool):
     runnable_tool: LangBaseTool | CrewBaseTool = DuckDuckGoSearchRun()
@@ -121,10 +123,7 @@ class WebSearchTool(QueryProcessor, CrewBaseTool):
     description :str= runnable_tool.description
     args_schema: Type[BaseModel] = CrewQuery
 
-    def _run(
-        self,
-        *args:Any,
-		**kwargs: Any) -> Any:
+    def _run(self, query:Any, callbacks=None, *args, **kwargs) -> Any:
         print(f"Using Tool: {self.name}")
-        return self.runnalbe_tool(*args, **kwargs)
+        return self.runnalbe_tool.run(query)
 
