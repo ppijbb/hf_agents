@@ -12,13 +12,19 @@ conversation_generation_task:
     Generate a natural conversation between a doctor and a patient based on a medical scenario.
     The conversation should include the patient's symptoms, the doctor's diagnosis, and the prescribed treatment plan.
     The wording of the conversation uses tone like native korean in real situations.
+    The Dentist must talk more than the patient just like a real situation.
     Create a conversation that takes place during {situation} in the {department} at {date}.
   expected_output: >
     A dialogue script .txt(target language: korean only)
     <example>
-    의사 : ..... (dental domain korean natural conversation)
-    환자 : ..... (dental domain korean natural conversation)
-    의사 : ..... (dental domain korean natural conversation)
+    의사 : ..... (dental domain natural conversation. target language: korean)
+    의사 : ..... (dental domain natural conversation. target language: korean)
+    환자 : ..... (dental domain natural conversation. target language: korean)
+    의사 : ..... (dental domain natural conversation. target language: korean)
+    의사 : ..... (dental domain natural conversation. target language: korean)
+    의사 : ..... (dental domain natural conversation. target language: korean)
+    의사 : ..... (dental domain natural conversation. target language: korean)
+    환자 : ..... (dental domain natural conversation. target language: korean)
     ..........(more than 20 turns)
     </example>
   agent: conversation_generator

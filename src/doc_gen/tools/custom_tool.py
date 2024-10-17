@@ -6,6 +6,7 @@ from crewai_tools import (SerperDevTool, ScrapeWebsiteTool, DallETool,
 from crewai.tasks.task_output import TaskOutput
 from crewai.tasks.conditional_task import ConditionalTask
 
+from langchain.tools import BaseTool as LangBaseTool
 from langchain_community.tools import (WikipediaQueryRun, PubmedQueryRun,
                                        YouTubeSearchTool, OpenWeatherMapQueryRun)
 from langchain_community.utilities import SearxSearchWrapper
@@ -85,9 +86,12 @@ class QueryProcessor:
                     if "title" in query["query"]:
                         query["query"] = query["query"]["title"]
 
-class PubmedTool(QueryProcessor):
-    runnable_tool = PubmedQueryRun()
-    def run(
+class PubmedTool(QueryProcessor, CrewBaseTool):
+    runnable_tool: LangBaseTool | CrewBaseTool = PubmedQueryRun()
+    name:str = runnable_tool.name
+    description:str = runnable_tool.description
+    
+    def _run(
         self,
         *args:Any,
 		**kwargs: Any) -> Any:
@@ -96,18 +100,24 @@ class PubmedTool(QueryProcessor):
         # print(fixed_args)
         return self.runnalbe_tool(*args,) # **fixed_args[0],
 
-class ArxivTool(QueryProcessor):
-    runnable_tool = ArxivQueryRun()
-    def run(
+class ArxivTool(QueryProcessor, CrewBaseTool):
+    runnable_tool: LangBaseTool | CrewBaseTool = ArxivQueryRun()
+    name:str = runnable_tool.name
+    description:str = runnable_tool.description
+    
+    def _run(
         self,
         *args:Any,
 		**kwargs: Any) -> Any:
         print(f"Using Tool: {self.name}")
         return self.runnalbe_tool(*args,)
 
-class WebSearchTool(QueryProcessor):
-    runnable_tool = DuckDuckGoSearchRun()
-    def run(
+class WebSearchTool(QueryProcessor, CrewBaseTool):
+    runnable_tool: LangBaseTool | CrewBaseTool = DuckDuckGoSearchRun()
+    name:str = runnable_tool.name
+    description :str= runnable_tool.description
+    
+    def _run(
         self,
         *args:Any,
 		**kwargs: Any) -> Any:
