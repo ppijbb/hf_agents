@@ -24,14 +24,14 @@ from pydantic import BaseModel, Field, field_validator
 class CrewQuery(BaseModel):
     query: str = Field(...)
     
-    # @field_validator("query", mode="before")
-    # @classmethod
-    # def dict_to_str(cls, v) -> str:
-    #     print(v)
-    #     if isinstance(v, dict):
-    #         if "query" in v:
-    #             v = v["query"]
-    #     return str(v["title"]) if isinstance(v, dict) else str(v)
+    @field_validator("query", mode="before")
+    @classmethod
+    def dict_to_str(cls, v) -> str:
+        print(v)
+        if isinstance(v, dict):
+            if "query" in v:
+                v = v["query"]
+        return str(v["title"]) if isinstance(v, dict) else str(v)
 
 class CustomTool(CrewBaseTool):
     name: str = "Name of my tool"
@@ -39,11 +39,7 @@ class CustomTool(CrewBaseTool):
         "Clear description for what this tool is useful for, you agent will need this information to use it."
     )
 
-    def run(
-        self,
-        *args: Any,
-        **kwargs: Any,
-    ) -> Any:
+    def run(self, *args: Any, **kwargs: Any) -> Any:
         print(f"Using Tool: {self.name}")
         return self._run(*args, **kwargs)
 
@@ -85,36 +81,40 @@ class MedicalDialogueSampleTool(CrewBaseTool):
         # 다양한 보고서 유형에 따른 템플릿 반환
 		return f"""<example>\n{random.choice(DIALOGUE_SAMPLES).strip()}\n</example>"""
 
-class QueryProcessor:
+class QueryProcessor(CrewBaseTool):
     runnable_tool: LangBaseTool | CrewBaseTool
     
-    def _check_query(self,
-                     query: str) -> bool:
+    def _check_query(self, query: str) -> bool:
         if isinstance(query, dict):
             if "query" in query:
                 if isinstance(query["query"], dict):
                     if "title" in query["query"]:
                         query["query"] = query["query"]["title"]
     
+    def __call__(self, *args, **kwargs) -> Any:
+        print(100)
+        return self.run(*args, **kwargs)
+    
     def _run(self, query:str, callbacks=None, *args, **kwargs) -> Any:
         print(f"Using Tool: {self.name}")
+        print(type(query), query)
         return self.runnable_tool.run(query)
 
-class PubmedTool(QueryProcessor, CrewBaseTool):
+class PubmedTool(QueryProcessor):
     runnable_tool: LangBaseTool | CrewBaseTool = PubmedQueryRun()
-    name:str = runnable_tool.name
-    description:str = runnable_tool.description
+    name: str = runnable_tool.name
+    description: str = runnable_tool.description
     args_schema: Type[BaseModel] = CrewQuery
 
-class ArxivTool(QueryProcessor, CrewBaseTool):
+class ArxivTool(QueryProcessor):
     runnable_tool: LangBaseTool | CrewBaseTool = ArxivQueryRun()
-    name:str = runnable_tool.name
-    description:str = runnable_tool.description
+    name: str = runnable_tool.name
+    description: str = runnable_tool.description
     args_schema: Type[BaseModel] = CrewQuery
 
-class WebSearchTool(QueryProcessor, CrewBaseTool):
+class WebSearchTool(QueryProcessor):
     runnable_tool: LangBaseTool | CrewBaseTool = DuckDuckGoSearchRun()
-    name:str = runnable_tool.name
-    description :str= runnable_tool.description
+    name: str = runnable_tool.name
+    description: str= runnable_tool.description
     args_schema: Type[BaseModel] = CrewQuery
 

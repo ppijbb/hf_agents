@@ -26,14 +26,11 @@ local_llm1 = "ollama/qwen2.5:latest"
 # vLLM engine
 local_llm2 = LLM(
 	model=f"ollama/{os.getenv('VLLM_MODEL')}",
-	temperature=0.5,
+	temperature=0.1,
 	max_tokens=2048,
 	# base_url="http://localhost:8000/v1",
  	# api_key="NOT A REAL KEY",
 )
-#TODO 1: 치의학 상황에 대한 대화 발생시키는 task, 이를 위한 tools
-#TODO 2: 대화 요약 및 인텐트 분석하는 task
-#TODO 3: 의학 보고서 작성하는 task
 
 
 @CrewBase
@@ -44,7 +41,10 @@ class DocGenCrew():
 	def domain_searcher(self) -> Agent:
 		return Agent(
 			config=self.agents_config['Domain_Searcher'],
-			tools=[PubmedTool(), WebSearchTool()], # Example of custom tool, loaded on the beginning of file
+			tools=[
+       			PubmedTool(),
+          		WebSearchTool()
+            ], # Example of custom tool, loaded on the beginning of file
 			verbose=True,
 			llm=local_llm2
 		)
@@ -138,14 +138,14 @@ class DocGenCrew():
 			share_crew=True,
 			# memory=True,
 			# planning_llm=local_llm1,
-			manager_agent=Agent(
-				role='작업 매니저',
-				goal='전체 작엄 매니지먼트 전문가',
-				backstory="""
-				크루들 간의 원활한 업무가 진행되도록 관리, 감독합니다.
-				""",
-				verbose=True,
-				allow_delegation=True,
-				llm=local_llm1,
-			)
+			# manager_agent=Agent(
+			# 	role='작업 매니저',
+			# 	goal='전체 작엄 매니지먼트 전문가',
+			# 	backstory="""
+			# 	크루들 간의 원활한 업무가 진행되도록 관리, 감독합니다.
+			# 	""",
+			# 	verbose=True,
+			# 	allow_delegation=True,
+			# 	llm=local_llm1,
+			# )
 		)
