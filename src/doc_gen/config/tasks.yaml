@@ -3,7 +3,7 @@ domain_searching_task:
     Search for domain-specific information related to the medical field, focusing on the latest therapies, medical treatment protocols, and research papers pertinent to the specified medical scenarios.
     Search results should be relevant, specific, and provide real-world treatment cases that can help generate conversations for consultation, treatment, and surgery between patients and physicians.
     step 1:
-    - Define the domain specific situation that takes place during {situation} in the {department} at {date}.
+    - Define the domain specific situation that takes place during {situation} in the {department} at {date}, patient named {patient_name}.
     step 2:
     - Search for the latest medical guidelines, treatment protocols, and research papers related to the specified medical scenario.
     
@@ -19,7 +19,7 @@ conversation_generation_task:
     The conversation should include the patient's symptoms, the doctor's diagnosis, and the prescribed treatment plan.
     The wording of the conversation uses tone like native korean in real situations.
     The Dentist must talk more than the patient just like a real situation.
-    Create a conversation that takes place during {situation} in the {department} at {date}.
+    Create a conversation that takes place during {situation} in the {department} at {date}, patient named {patient_name}.
   expected_output: >
     A dialogue script .txt(target language: korean only)
     <example>
