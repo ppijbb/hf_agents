@@ -25,7 +25,7 @@ from langchain_community.agent_toolkits.github.toolkit import GitHubToolkit
 from langchain_community.tools.arxiv.tool import ArxivQueryRun
 from langchain_community.tools.google_trends.tool import GoogleTrendsQueryRun
 from langchain_community.utilities.google_trends import GoogleTrendsAPIWrapper
-from langchain.llms import Ollama
+from langchain_community.llms import Ollama
 from langchain.tools import BaseTool
 from langchain.tools import BaseTool as LangBaseTool
 from pytrends.request import TrendReq
@@ -110,7 +110,8 @@ class WebSearchTool(QueryProcessor):
 
 
 agent_tools = [
-      DuckDuckGoSearchRun(),
+      # DuckDuckGoSearchRun(),
+      WebSearchTool()
     #   ArxivQueryRun(),
     #   PubmedTool(),
     #   PubmedQueryRun(args_schema=CrewQuery),
@@ -136,16 +137,14 @@ summ_agent = Agent(
   verbose=True,
   llm=ch_llm, # ollama_solar,
   allow_delegation=True,
-  tools=agent_tools,
+  # tools=agent_tools,
 #   agent_executor=[None],
 )
 
 team_manager = Agent(
   role='작업 매니저',
   goal='전체 작엄 매니지먼트 전문가',
-  backstory="""
-크루들 간의 원활한 업무가 진행되도록 관리, 감독합니다.
-""",
+  backstory="""크루들 간의 원활한 업무가 진행되도록 관리, 감독합니다.""",
   verbose=True,
   llm=en_llm, # ollama_solar,
   allow_delegation=True,
@@ -156,9 +155,9 @@ def callback_function(output: TaskOutput):
     # Do something after the task is completed
     # Example: Send an email to the manager
     print(f"""
-        Task completed!
-        Task: {output.description}
-        Output: {output.raw_output}
+      Task completed!
+      Task: {output.description}
+      Output: {output.raw_output}
     """)
 
 # Create tasks for your agents
@@ -187,14 +186,14 @@ search_task = Task(
 
 summ_task = Task(
   description="""
-    make summarization of paper
+  make summarization of paper
 """,
   expected_output='abstract of paper',
   agent=summ_agent,
   allow_delegation=False,
 #   output_pydantic=AgentRerunForm,
   max_iter=1,
-#   context=[labeling]
+  context=[search_task]
 )
 
 
@@ -208,10 +207,12 @@ transcript_crew = Crew(
       summ_task],
 #   full_output=False,
 #   planning=True,
+  function_calling_llm=en_llm,
   verbose=True, # Crew verbose more will let you know what tasks are being worked on, you can set it to 1 or 2 to different logging levels
   process=Process.sequential, # Sequential process will have tasks executed one after the other and the outcome of the previous one is passed as extra content into this next.
   manager_agent=team_manager,
   planning_llm=en_llm,
+  language="ko"
 )
 
 # output_crew = Crew(
@@ -250,7 +251,7 @@ filename = "your_model.pkl"
 #     raise Exception(f"An error occurred while training the crew: {e}")
 
 
-result = asyncio.run(transcript_crew.kickoff_async())
+result = transcript_crew.kickoff()
 
 print("######################")
 print(result)
