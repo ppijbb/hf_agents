@@ -139,9 +139,11 @@ agent_tools = [
     ]
 def final_parser(answer: AgentAction):
   fixed_prompt = "Once all necessary information is gathered:"
-  print(answer.thought)
+  print(answer.result)
   if "Final Answer:" in answer.result and "Action:" in answer.result:
-    answer.result = fixed_prompt + "\n\n" + answer.result.split(fixed_prompt)[1]
+    processed = fixed_prompt + "\n\n" + answer.result.split(fixed_prompt)[1]
+    answer.result = processed
+    answer.text = processed
     print(answer.result)
 
 search_agent = Agent(

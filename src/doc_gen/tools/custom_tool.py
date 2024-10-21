@@ -25,7 +25,9 @@ from pydantic import BaseModel, Field, field_validator
 def final_parser(answer: AgentAction):
   fixed_prompt = "Once all necessary information is gathered:"
   if "Final Answer:" in answer.result and "Action" in answer.result:
-    answer.result = fixed_prompt + "\n\n" + answer.result.split(fixed_prompt)[1]
+    processed = fixed_prompt + "\n\n" + answer.result.split(fixed_prompt)[1]
+    answer.result = processed
+    answer.text = processed
 
 class CrewQuery(BaseModel):
     query: str = Field(...)
