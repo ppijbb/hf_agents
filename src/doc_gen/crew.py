@@ -3,10 +3,13 @@ import os
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import DOCXSearchTool
+from langchain_community.tools import PubmedQueryRun
 from langchain_community.llms import Ollama
+from langchain.agents import Tool
 
 # Uncomment the following line to use an example of a custom tool
 from src.doc_gen.tools.custom_tool import (MedicalDocumentTemplateTool, MedicalDialogueSampleTool, 
+                                           final_parser,
 										   WebSearchTool, PubmedTool, ArxivTool, CrewQuery)
 # Check our tools documentations for more information on how to use them
 from crewai_tools import SerperDevTool
@@ -31,6 +34,12 @@ local_llm2 = LLM(
 	# base_url="http://localhost:8000/v1",
  	# api_key="NOT A REAL KEY",
 )
+pub = PubmedQueryRun()
+PubTool = Tool(
+	name=pub.name,
+	description=pub.description,
+    func=pub.run
+)
 
 
 @CrewBase
@@ -42,9 +51,11 @@ class DocGenCrew():
 		return Agent(
 			config=self.agents_config['Domain_Searcher'],
 			tools=[
-       			PubmedTool(),
-          		WebSearchTool()
+				PubTool
+       			# PubmedTool(),
+          		# WebSearchTool()
             ], # Example of custom tool, loaded on the beginning of file
+   			step_callback=final_parser,
 			verbose=True,
 			llm=local_llm2
 		)
@@ -55,6 +66,7 @@ class DocGenCrew():
 			config=self.agents_config['Conversation_Generator'],
 			# tools=[MedicalDialogueSampleTool()], # Example of custom tool, loaded on the beginning of file
 			verbose=True,
+     		step_callback=final_parser,
 			llm=local_llm2
 		)
 
@@ -63,6 +75,7 @@ class DocGenCrew():
 		return Agent(
             config=self.agents_config['Medical_Intent_Extractor'],
             verbose=True,
+            step_callback=final_parser,
             llm=local_llm2
         )
 
@@ -72,6 +85,7 @@ class DocGenCrew():
 			config=self.agents_config['Medical_Interpreter'],
 			# tools=[MyCustomTool()], # Example of custom tool, loaded on the beginning of file
 			verbose=True,
+   			step_callback=final_parser,
 			llm=local_llm2
 		)
 
@@ -81,9 +95,10 @@ class DocGenCrew():
 			config=self.agents_config['Medical_Report_Writer'],
 			# tools=[MedicalDocumentTemplateTool(),],
 			verbose=True,
+   			step_callback=final_parser,
 			llm=local_llm2
 		)
-	
+
 	@task
 	def domain_searching_task(self) -> Task:
 		return Task(
@@ -97,14 +112,14 @@ class DocGenCrew():
 			config=self.tasks_config['conversation_generation_task'],
 			output_file='outputs/dialouge.txt'
 		)
-	
+
 	@task
 	def intent_extraction_task(self) -> Task:
 		return Task(
 	        config=self.tasks_config['intent_extraction_task'],
 	        output_file='outputs/intents.txt'
 		)
-	
+
 	@task
 	def consultation_analysis_task(self) -> Task:
 		# self.tasks_config['consultation_analysis_task'].update({
@@ -136,6 +151,7 @@ class DocGenCrew():
 			verbose=True,
 			# planning=True,
 			share_crew=True,
+   
 			# memory=True,
 			# planning_llm=local_llm1,
 			# manager_agent=Agent(

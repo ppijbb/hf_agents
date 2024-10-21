@@ -4,6 +4,7 @@ from crewai_tools import BaseTool as CrewBaseTool
 from crewai_tools import (SerperDevTool, ScrapeWebsiteTool, DallETool,
                           WebsiteSearchTool, SeleniumScrapingTool, tool)
 from crewai.tasks.task_output import TaskOutput
+from crewai.agents.parser import AgentAction
 from crewai.tasks.conditional_task import ConditionalTask
 
 from langchain.tools import BaseTool as LangBaseTool
@@ -20,6 +21,11 @@ from src.doc_gen.tools.tool_data import DIALOGUE_SAMPLES
 
 from pydantic import BaseModel, Field, field_validator
 
+
+def final_parser(answer: AgentAction):
+  fixed_prompt = "Once all necessary information is gathered:"
+  if "Final Answer:" in answer.result and "Action" in answer.result:
+    answer.result = fixed_prompt + "\n\n" + answer.result.split(fixed_prompt)[1]
 
 class CrewQuery(BaseModel):
     query: str = Field(...)

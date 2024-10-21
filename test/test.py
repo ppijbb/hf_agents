@@ -1,12 +1,11 @@
 import os
-import sys
 import datetime
-import random
-import time
-import json
-import asyncio
+from typing import Union
 from tqdm.auto import tqdm
 from crewai import Agent, Task, Crew, Process, Pipeline, LLM
+from crewai.agents.parser import CrewAgentParser
+from crewai.agents.parser import AgentAction, AgentFinish
+from crewai.agents.crew_agent_executor import CrewAgentExecutor
 from crewai_tools import (SerperDevTool, ScrapeWebsiteTool, DallETool,
                           WebsiteSearchTool, SeleniumScrapingTool, tool)
 from crewai_tools.tools.base_tool import BaseTool as CrewBaseTool
@@ -30,6 +29,8 @@ from langchain.tools import BaseTool
 from langchain.tools import BaseTool as LangBaseTool
 from pytrends.request import TrendReq
 
+from langchain.agents import Tool
+from langchain.utilities import GoogleSerperAPIWrapper
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -55,6 +56,10 @@ en_llm = LLM(
 )
 
 ch_llm = en_llm
+
+class FinallParser(CrewAgentExecutor):
+    def _format_answer(self, answer: str) -> Union[AgentAction, AgentFinish]:
+        return CrewAgentParser(agent=self.agent).parse(answer)
 
 class CrewQuery(BaseModel):
     query: str = Field(...)
@@ -88,7 +93,9 @@ class QueryProcessor(CrewBaseTool):
     def _run(self, query:str, callbacks=None, *args, **kwargs) -> Any:
         print(f"Using Tool: {self.name}")
         print(type(query), query)
-        return self.runnable_tool.run(query)
+        data = self.runnable_tool.run(query)
+        print(data)
+        return data
 
 class PubmedTool(QueryProcessor):
     runnable_tool: LangBaseTool | CrewBaseTool = PubmedQueryRun()
@@ -108,25 +115,44 @@ class WebSearchTool(QueryProcessor):
     description: str= runnable_tool.description
     args_schema: Type[BaseModel] = CrewQuery
 
+search = DuckDuckGoSearchRun()
+webtool = Tool(
+  name=search.name,
+  description=search.description,
+  func=search.run,
+)
+pubmed = PubmedQueryRun()
+pubtool = Tool(
+  name=pubmed.name,
+  description=pubmed.description,
+  func=pubmed.run)
 
 agent_tools = [
       # DuckDuckGoSearchRun(),
-      WebSearchTool()
+      # WebSearchTool()
+      # webtool,
+      pubtool
     #   ArxivQueryRun(),
     #   PubmedTool(),
     #   PubmedQueryRun(args_schema=CrewQuery),
     #   YouTubeSearchTool(args_schema=CrewQuery)
     ]
+def final_parser(answer: AgentAction):
+  fixed_prompt = "Once all necessary information is gathered:"
+  print(answer.thought)
+  if "Final Answer:" in answer.result and "Action:" in answer.result:
+    answer.result = fixed_prompt + "\n\n" + answer.result.split(fixed_prompt)[1]
+    print(answer.result)
 
 search_agent = Agent(
   role='Search Engine',
   goal='Search for specific treatment effect reports on dental treatment using the agent prompt.',
   backstory="""Find the medical infomations with tools.""",
   verbose=True,
+  step_callback=final_parser,
   llm=en_llm, # ollama_openhermes,
   allow_delegation=False,
   tools=agent_tools,
-#   agent_executor=[None],
 #   tools=agent_tools,
 )
 
@@ -138,7 +164,6 @@ summ_agent = Agent(
   llm=ch_llm, # ollama_solar,
   allow_delegation=True,
   # tools=agent_tools,
-#   agent_executor=[None],
 )
 
 team_manager = Agent(
@@ -148,7 +173,6 @@ team_manager = Agent(
   verbose=True,
   llm=en_llm, # ollama_solar,
   allow_delegation=True,
-#   agent_executor=[None],
 )
 
 def callback_function(output: TaskOutput):
@@ -176,6 +200,7 @@ search_task = Task(
   Step by step, will update more detail query topic.
   Let's Start Task~
   - start topic : Treatment of an ambush permanent tooth surgical procedure
+  (If Final Answer, don't generate Action in sentence.)
 """,
   expected_output='infomation',
   allow_delegation=False,
@@ -199,6 +224,7 @@ summ_task = Task(
 
 # Instantiate your crew with a sequential process
 transcript_crew = Crew(
+  step_callback="",
   agents=[
       search_agent,
       summ_agent],
