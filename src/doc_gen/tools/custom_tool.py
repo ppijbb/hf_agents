@@ -23,11 +23,15 @@ from pydantic import BaseModel, Field, field_validator
 
 
 def final_parser(answer: AgentAction):
-  fixed_prompt = "Once all necessary information is gathered:"
-  if "Final Answer:" in answer.result and "Action" in answer.result:
-    processed = fixed_prompt + "\n\n" + answer.result.split(fixed_prompt)[1]
-    answer.result = processed
-    answer.text = processed
+    
+    fixed_prompt = "Once all necessary information is gathered:"
+    try:
+        if "Final Answer:" in answer.result and "Action" in answer.result:
+            processed = fixed_prompt + "\n\n" + answer.result.split(fixed_prompt)[1]
+            answer.result = processed
+            answer.text = processed
+    except:
+        print(answer.text)
 
 class CrewQuery(BaseModel):
     query: str = Field(...)
