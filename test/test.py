@@ -49,8 +49,8 @@ os.environ['VLLM_MODEL'] = "Gemma-Ko-Merge"
 # vLLM engine
 en_llm = LLM(
 	model=f"ollama/{os.getenv('VLLM_MODEL')}",
-	temperature=0.1,
-	max_tokens=2048,
+	temperature=0.91,
+	max_tokens=4096,
 	# base_url="http://localhost:8000/v1",
  	# api_key="NOT A REAL KEY",
 )
@@ -139,18 +139,19 @@ agent_tools = [
     ]
 def final_parser(answer: AgentAction):
   fixed_prompt = "Once all necessary information is gathered:"
-  print(answer.result)
+  # print(answer.text)
   if "Final Answer:" in answer.result and "Action:" in answer.result:
     processed = fixed_prompt + "\n\n" + answer.result.split(fixed_prompt)[1]
     answer.result = processed
     answer.text = processed
-    print(answer.result)
+    # print(answer.result)
 
 search_agent = Agent(
   role='Search Engine',
   goal='Search for specific treatment effect reports on dental treatment using the agent prompt.',
   backstory="""Find the medical infomations with tools.""",
   verbose=True,
+  max_iter=3,
   step_callback=final_parser,
   llm=en_llm, # ollama_openhermes,
   allow_delegation=False,
@@ -163,6 +164,8 @@ summ_agent = Agent(
   goal='Summarize found document',
   backstory="""Summarize as abstraction, report, short blog etc...""",
   verbose=True,
+  max_iter=3,
+  step_callback=final_parser,
   llm=ch_llm, # ollama_solar,
   allow_delegation=True,
   # tools=agent_tools,
@@ -171,7 +174,10 @@ summ_agent = Agent(
 team_manager = Agent(
   role='작업 매니저',
   goal='전체 작엄 매니지먼트 전문가',
-  backstory="""크루들 간의 원활한 업무가 진행되도록 관리, 감독합니다.""",
+  backstory="""
+  크루들 간의 원활한 업무가 진행되도록 관리, 감독합니다.
+  I did it wrong. 을 찾아 낸다면, 해당 프롬프트 전체를 수정하여 문제를 해결합니다.
+  """,
   verbose=True,
   llm=en_llm, # ollama_solar,
   allow_delegation=True,
@@ -204,7 +210,7 @@ search_task = Task(
   - start topic : Treatment of an ambush permanent tooth surgical procedure
   (If Final Answer, don't generate Action in sentence.)
 """,
-  expected_output='infomation',
+  expected_output='infomation document in text',
   allow_delegation=False,
 #   output_pydantic=AgentSharedForm,
   agent=search_agent,
@@ -215,7 +221,7 @@ summ_task = Task(
   description="""
   make summarization of paper
 """,
-  expected_output='abstract of paper',
+  expected_output='abstract of paper in text',
   agent=summ_agent,
   allow_delegation=False,
 #   output_pydantic=AgentRerunForm,
@@ -235,12 +241,12 @@ transcript_crew = Crew(
       summ_task],
 #   full_output=False,
 #   planning=True,
-  function_calling_llm=en_llm,
+  # function_calling_llm=en_llm,
   verbose=True, # Crew verbose more will let you know what tasks are being worked on, you can set it to 1 or 2 to different logging levels
   process=Process.sequential, # Sequential process will have tasks executed one after the other and the outcome of the previous one is passed as extra content into this next.
   manager_agent=team_manager,
-  planning_llm=en_llm,
-  language="ko"
+  # planning_llm=en_llm,
+  # language="ko"
 )
 
 # output_crew = Crew(

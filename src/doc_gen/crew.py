@@ -1,4 +1,4 @@
-import random
+from datetime import datetime
 import os
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
@@ -46,17 +46,21 @@ PubTool = Tool(
 class DocGenCrew():
 	"""DocGen crew"""
 
+	def _get_time_now(self):
+		return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+	
 	@agent
 	def domain_searcher(self) -> Agent:
 		return Agent(
 			config=self.agents_config['Domain_Searcher'],
 			tools=[
-				PubTool
+				PubTool,
        			# PubmedTool(),
-          		# WebSearchTool()
+          		WebSearchTool()
             ], # Example of custom tool, loaded on the beginning of file
    			step_callback=final_parser,
 			verbose=True,
+			max_iter=5,
 			llm=local_llm2
 		)
 
@@ -66,6 +70,7 @@ class DocGenCrew():
 			config=self.agents_config['Conversation_Generator'],
 			# tools=[MedicalDialogueSampleTool()], # Example of custom tool, loaded on the beginning of file
 			verbose=True,
+			max_iter=5,
      		step_callback=final_parser,
 			llm=local_llm2
 		)
@@ -75,6 +80,7 @@ class DocGenCrew():
 		return Agent(
             config=self.agents_config['Medical_Intent_Extractor'],
             verbose=True,
+			max_iter=5,
             step_callback=final_parser,
             llm=local_llm2
         )
@@ -85,6 +91,7 @@ class DocGenCrew():
 			config=self.agents_config['Medical_Interpreter'],
 			# tools=[MyCustomTool()], # Example of custom tool, loaded on the beginning of file
 			verbose=True,
+			max_iter=5,
    			step_callback=final_parser,
 			llm=local_llm2
 		)
@@ -95,6 +102,7 @@ class DocGenCrew():
 			config=self.agents_config['Medical_Report_Writer'],
 			# tools=[MedicalDocumentTemplateTool(),],
 			verbose=True,
+			max_iter=5,
    			step_callback=final_parser,
 			llm=local_llm2
 		)
@@ -103,21 +111,24 @@ class DocGenCrew():
 	def domain_searching_task(self) -> Task:
 		return Task(
 			config=self.tasks_config['domain_searching_task'],
-			output_file='outputs/domain_report.txt'
+			output_file=f"outputs/domain_report.txt",
+			# output_file=f'outputs/domain_report_{self._get_time_now()}.txt'
 		)	
 
 	@task
 	def conversation_generation_task(self) -> Task:
 		return Task(
 			config=self.tasks_config['conversation_generation_task'],
-			output_file='outputs/dialouge.txt'
+			output_file=f"outputs/dialouge.txt",
+			# output_file=f'outputs/dialouge_{self._get_time_now()}.txt'
 		)
 
 	@task
 	def intent_extraction_task(self) -> Task:
 		return Task(
 	        config=self.tasks_config['intent_extraction_task'],
-	        output_file='outputs/intents.txt'
+			output_file=f"outputs/intents.txt",
+	        # output_file=f'outputs/intents_{self._get_time_now()}.txt'
 		)
 
 	@task
@@ -127,7 +138,8 @@ class DocGenCrew():
 		# })
 		return Task(
 			config=self.tasks_config['consultation_analysis_task'],
-			output_file='outputs/summary.txt'
+			output_file=f"outputs/summary.txt",
+			# output_file=f'outputs/summary_{self._get_time_now()}.txt'
 		)
 
 	@task
@@ -137,7 +149,8 @@ class DocGenCrew():
 		# })
 		return Task(
 			config=self.tasks_config['report_generation_task'],
-			output_file='outputs/report.md'
+			output_file=f"outputs/report.md",
+			# output_file=f'outputs/report_{self._get_time_now()}.md'
 		)
 
 	@crew
