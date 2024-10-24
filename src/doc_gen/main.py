@@ -53,7 +53,7 @@ def run():
         "department": random.choice(departments),
         "situation": random.choice(situations),
         "date": get_today(),
-        "patient_name": "덴컴 테스트 유저"
+        "patient_name": "홍길동"
     }
     # asyncio.run(
     #     DocGenCrew().crew().kickoff_async(
@@ -70,7 +70,7 @@ def train():
         "department": random.choice(departments),
         "situation": random.choice(situations),
         "date": get_today(),
-        "patient_name": "덴컴 테스트 유저"
+        "patient_name": "김덕배"
     }
     try:
         DocGenCrew().crew().train(

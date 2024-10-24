@@ -5,7 +5,7 @@ domain_searching_task:
     step 1:
     - Define the domain specific situation that takes place during {situation} in the {department} at {date}, patient named {patient_name}.
     step 2:
-    - Search for the latest medical guidelines, treatment protocols, and research papers related to the specified medical scenario.
+    - Search for the latest medical kwonledge, treatment protocols, and research papers related to the specified medical scenario.
     
     Let's focus on the treatment procedures and protocols that are most relevant to the patient's symptoms and diagnosis.
     Go! Find the most recent and effective treatment procedures for the patient's condition.

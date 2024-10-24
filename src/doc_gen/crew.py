@@ -111,7 +111,7 @@ class DocGenCrew():
 	def domain_searching_task(self) -> Task:
 		return Task(
 			config=self.tasks_config['domain_searching_task'],
-			output_file=f"outputs/domain_report.txt",
+			output_file=f"outputs/domain_report.md",
 			# output_file=f'outputs/domain_report_{self._get_time_now()}.txt'
 		)	
 
@@ -127,7 +127,7 @@ class DocGenCrew():
 	def intent_extraction_task(self) -> Task:
 		return Task(
 	        config=self.tasks_config['intent_extraction_task'],
-			output_file=f"outputs/intents.txt",
+			output_file=f"outputs/intents.md",
 	        # output_file=f'outputs/intents_{self._get_time_now()}.txt'
 		)
 
@@ -138,7 +138,7 @@ class DocGenCrew():
 		# })
 		return Task(
 			config=self.tasks_config['consultation_analysis_task'],
-			output_file=f"outputs/summary.txt",
+			output_file=f"outputs/summary.md",
 			# output_file=f'outputs/summary_{self._get_time_now()}.txt'
 		)
 
