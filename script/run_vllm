@@ -1,13 +1,17 @@
 #!/bin/bash
 
 cd src/serve &&\
-MAX_JOBS=8 poetry run\
+MAX_JOBS=1 \
+VLLM_USE_MODELSCOPE=false \
+    poetry run \
     serve run vllm_serve:build_app\
-        model=$VLLM_MODEL\
-        accelerator="GPU"\
-        dtype="float16"\
-        gpu_memory_utilization=0.95\
-        max_model_len=8192
+        model=Gunulhona/Gemma-Ko-Med\
+        accelerator=GPU\
+        load_format=auto\
+        dtype=half\
+        gpu_memory_utilization=0.9\
+        block_size=8\
+        max_model_len=4096
        
 
 # usage: vllm serve [-h] [--model MODEL] [--tokenizer TOKENIZER]

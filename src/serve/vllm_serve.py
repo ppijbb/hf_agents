@@ -22,10 +22,10 @@ from vllm.utils import FlexibleArgumentParser
 from vllm.entrypoints.logger import RequestLogger
 
 os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = "0"
-os.environ["VLLM_CPU_KVCACHE_SPACE"] = "5"
-os.environ["VLLM_CPU_OMP_THREADS_BIND"] = "0-29"
+os.environ["VLLM_CPU_KVCACHE_SPACE"] = "4"
+os.environ["VLLM_CPU_OMP_THREADS_BIND"] = "0-15"
 os.environ["RAY_DEDUP_LOGS"] = "0" 
-os.environ["VLLM_ATTENTION_BACKEND"] = "FLASHINFER"# "XFORMERS"
+os.environ["VLLM_ATTENTION_BACKEND"] = "FLASHINFER"
 
 logger = logging.getLogger("ray.serve")
 
@@ -35,7 +35,7 @@ app = FastAPI()
 @serve.deployment(
     autoscaling_config={
         "min_replicas": 1,
-        "max_replicas": 10,
+        "max_replicas": 2,
         "target_ongoing_requests": 5,
     },
     max_ongoing_requests=10,
@@ -117,7 +117,7 @@ def parse_vllm_args(cli_args: Dict[str, str]):
     )
 
     parser = make_arg_parser(arg_parser)
-    arg_strings = []
+    arg_strings = ["--enforce_eager"]
     for key, value in cli_args.items():
         arg_strings.extend([f"--{key}", str(value)])
     logger.info(arg_strings)
