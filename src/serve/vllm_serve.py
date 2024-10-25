@@ -25,7 +25,7 @@ os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = "0"
 os.environ["VLLM_CPU_KVCACHE_SPACE"] = "5"
 os.environ["VLLM_CPU_OMP_THREADS_BIND"] = "0-29"
 os.environ["RAY_DEDUP_LOGS"] = "0" 
-os.environ["VLLM_ATTENTION_BACKEND"] = "XFORMERS"
+os.environ["VLLM_ATTENTION_BACKEND"] = "FLASHINFER"# "XFORMERS"
 
 logger = logging.getLogger("ray.serve")
 
@@ -150,15 +150,17 @@ def build_app(cli_args: Dict[str, str]) -> serve.Application:
 
     # We use the "STRICT_PACK" strategy below to ensure all vLLM actors are placed on
     # the same Ray node.
-    return VLLMDeployment.options(
-        placement_group_bundles=pg_resources, 
-        placement_group_strategy="STRICT_PACK"
-    ).bind(
-        engine_args,
-        parsed_args.response_role,
-        parsed_args.lora_modules,
-        parsed_args.prompt_adapters,
-        cli_args.get("request_logger"),
-        parsed_args.chat_template,
-    )
+    return (VLLMDeployment
+            # .options(
+            #     placement_group_bundles=pg_resources, 
+            #     placement_group_strategy="STRICT_PACK"
+            # )
+            .bind(
+                engine_args,
+                parsed_args.response_role,
+                parsed_args.lora_modules,
+                parsed_args.prompt_adapters,
+                cli_args.get("request_logger"),
+                parsed_args.chat_template,
+            ))
 

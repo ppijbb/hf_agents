@@ -1,4 +1,5 @@
 domain_searching_task:
+  agent: domain_searcher
   description: >
     Search for domain-specific information related to the medical field, focusing on the latest therapies, medical treatment protocols, and research papers pertinent to the specified medical scenarios.
     Search results should be relevant, specific, and provide real-world treatment cases that can help generate conversations for consultation, treatment, and surgery between patients and physicians.
@@ -11,9 +12,9 @@ domain_searching_task:
     Go! Find the most recent and effective treatment procedures for the patient's condition.
   expected_output: >
     Found threatement procedure note.
-  agent: domain_searcher
 
 conversation_generation_task:
+  agent: conversation_generator
   description: >
     Generate a natural conversation between a doctor and a patient based on a medical scenario.
     The conversation should include the patient's symptoms, the doctor's diagnosis, and the prescribed treatment plan.
@@ -33,52 +34,87 @@ conversation_generation_task:
     환자 : ..... (dental domain natural conversation. target language: korean)
     ..........(more than 20 turns)
     </example>
-  agent: conversation_generator
-  context:
-    - domain_searching_task
+
 
 intent_extraction_task:
+  agent: medical_intent_extractor
   description: >
     Analyze the generated doctor-patient conversation and extract key medical intents.
     Identify and categorize intentions such as symptom reporting, diagnosis requests, treatment discussions, and follow-up arrangements.
     Intent should be a simple word only.
     Follow the format below:
-      * intent1 (korean only)
-          - intent1 keyword (word only)
-          - intent1 keyword (word only)
+      * 방문 목적
+          - intent keyword
+          - intent keyword
             ...
-      * intent2 (korean only)
-          - intent2 keyword (word only)
-          - intent2 keyword (word only)
+      * 증상 보고
+          - intent keyword
+          - intent keyword
             ...
-        ...
+      * 진료 내용
+          - intent keyword
+          - intent keyword
+            ...
+      * 치료 계획
+          - intent keyword
+          - intent keyword
+            ...
+      * 방문 일정 및 비용
+          - intent keyword
+          - intent keyword
+            ...
+      ---
+      Let's focus on the key intents expressed in the conversation and categorize them accordingly.
   expected_output: >
     A structured list of identified medical intents, each categorized and briefly explained.
     The output should include the context in which each intent was expressed.(target language: korean)
-  agent: medical_intent_extractor
-  context:
-    - conversation_generation_task
 
 consultation_analysis_task:
+  agent: medical_interpreter
   description: >
     Analyze the doctor's consultation with the patient and extract key details such as symptoms, diagnosis, and treatment plans.
     The analysis should focus on identifying the most relevant information for creating a medical report.
     The categories would be in SOAP note (an acronym for subjective, objective, assessment, and plan).
   expected_output: >
     A structured set of information extracted from the conversation, including the patient's symptoms, diagnosis, and any prescribed treatments or follow-up recommendations.(target language: korean)
-  agent: medical_interpreter
-  context:
-      - conversation_generation_task
-      - intent_extraction_task
+
 
 report_generation_task:
+  agent: medical_report_writer
   description: >
     Based on the analyzed consultation, generate a structured medical report that includes diagnosis, treatment plan, and other relevant patient information in the required format.
     Report must be written in a professional manner and include all necessary sections with a simple word only.
+    Final report would be formatted with HPI report. If No data in the conversation, you can just pass blank the section.
+    - C.C(Chief Complaint)
+    - Hx(History of Present Illness)
+    - ROS(Review of Systems)
+    - PMH(Past Medical History)
+    - PSH(Past Surgical History)
+    - Medications
+    - Allergies
+    - FH(Family History)
+    - SH(Social History)
+    - PE(Physical Examination)
+    - Lab Data
+    - Assessment
+    - Plan
   expected_output: >
     A complete medical report formatted according to the specified guidelines, including sections for patient symptoms, diagnosis, treatments, and follow-up recommendations.(target language: korean)
-  agent: medical_report_writer
-  context:
-    - intent_extraction_task
-    - conversation_generation_task
-    - consultation_analysis_task
+
+treatment_searching_task:
+  agent: domain_searcher
+  description: >
+    Search for domain-specific information related to the medical field, focusing on the latest therapies, medical treatment protocols, and research papers pertinent to the specified medical scenarios.
+    Search results should be relevant, specific, and provide real-world treatment cases that can help generate conversations for consultation, treatment, and surgery between patients and physicians.
+    step 1:
+    - Under stand patient's symptom. And do diagnosis with Chain Of Thought method.
+    step 2:
+    - Search for the medical kwonledge, treatment protocols, and research papers related to the specified medical scenario.
+    step 3:
+    - Make a treatment plans for the patient.
+    - List up all possible treatment plans with bullet points.
+    - Give a short details for each treatment plans.
+    Let's focus on the treatment procedures and protocols that are most relevant to the patient's symptoms and diagnosis.
+    Go! Find the most recent and effective treatment procedures for the patient's condition.
+  expected_output: >
+    Sujest the treatment procedure note.

@@ -30,7 +30,7 @@ local_llm1 = "ollama/qwen2.5:latest"
 local_llm2 = LLM(
 	model=f"ollama/{os.getenv('VLLM_MODEL')}",
 	temperature=0.1,
-	max_tokens=2048,
+	max_tokens=8192,
 	# base_url="http://localhost:8000/v1",
  	# api_key="NOT A REAL KEY",
 )
@@ -60,7 +60,7 @@ class DocGenCrew():
             ], # Example of custom tool, loaded on the beginning of file
    			step_callback=final_parser,
 			verbose=True,
-			max_iter=5,
+			max_iter=1,
 			llm=local_llm2
 		)
 
@@ -119,6 +119,9 @@ class DocGenCrew():
 	def conversation_generation_task(self) -> Task:
 		return Task(
 			config=self.tasks_config['conversation_generation_task'],
+   			context=[
+    	      self.domain_searching_task()
+	         ],
 			output_file=f"outputs/dialouge.txt",
 			# output_file=f'outputs/dialouge_{self._get_time_now()}.txt'
 		)
@@ -127,6 +130,9 @@ class DocGenCrew():
 	def intent_extraction_task(self) -> Task:
 		return Task(
 	        config=self.tasks_config['intent_extraction_task'],
+         	context=[
+              self.conversation_generation_task()
+              ],
 			output_file=f"outputs/intents.md",
 	        # output_file=f'outputs/intents_{self._get_time_now()}.txt'
 		)
@@ -138,6 +144,10 @@ class DocGenCrew():
 		# })
 		return Task(
 			config=self.tasks_config['consultation_analysis_task'],
+   			context=[
+          		self.conversation_generation_task(),
+				self.intent_extraction_task()
+    		],
 			output_file=f"outputs/summary.md",
 			# output_file=f'outputs/summary_{self._get_time_now()}.txt'
 		)
@@ -149,10 +159,31 @@ class DocGenCrew():
 		# })
 		return Task(
 			config=self.tasks_config['report_generation_task'],
+   			context=[
+          		self.conversation_generation_task(),
+				self.intent_extraction_task(),
+				self.consultation_analysis_task()
+    		],
 			output_file=f"outputs/report.md",
 			# output_file=f'outputs/report_{self._get_time_now()}.md'
 		)
-
+  
+	@task
+	def treatment_searching_task(self) -> Task:
+		# self.tasks_config['report_generation_task'].update({
+		# 	"context": ["conversation_generation_task", "consultation_analysis_task"]
+		# })
+		return Task(
+			config=self.tasks_config['treatment_searching_task'],
+   			context=[
+          		self.conversation_generation_task(),
+				self.intent_extraction_task(),
+				self.consultation_analysis_task(),
+				self.report_generation_task()
+    		],
+			output_file=f"outputs/treatment.md",
+			# output_file=f'outputs/report_{self._get_time_now()}.md'
+		)
 	@crew
 	def crew(self) -> Crew:
 		"""Creates the DocGen crew"""
