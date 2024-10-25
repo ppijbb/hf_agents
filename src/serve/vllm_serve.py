@@ -21,9 +21,10 @@ from vllm.entrypoints.openai.serving_engine import LoRAModulePath, PromptAdapter
 from vllm.utils import FlexibleArgumentParser
 from vllm.entrypoints.logger import RequestLogger
 
-os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = "0"
-os.environ["VLLM_CPU_KVCACHE_SPACE"] = "4"
-os.environ["VLLM_CPU_OMP_THREADS_BIND"] = "0-15"
+os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "0"
+os.environ["VLLM_DO_NOT_TRACK"] = "1"
+os.environ["VLLM_CPU_KVCACHE_SPACE"] = "8"
+os.environ["VLLM_CPU_OMP_THREADS_BIND"] = "0-63"
 os.environ["RAY_DEDUP_LOGS"] = "0" 
 os.environ["VLLM_ATTENTION_BACKEND"] = "FLASHINFER"
 
@@ -117,7 +118,7 @@ def parse_vllm_args(cli_args: Dict[str, str]):
     )
 
     parser = make_arg_parser(arg_parser)
-    arg_strings = ["--enforce_eager"]
+    arg_strings = ["--enforce_eager", "--worker_use_ray"]
     for key, value in cli_args.items():
         arg_strings.extend([f"--{key}", str(value)])
     logger.info(arg_strings)
@@ -146,6 +147,7 @@ def build_app(cli_args: Dict[str, str]) -> serve.Application:
     pg_resources = []
     pg_resources.append({"CPU": 1})  # for the deployment replica
     for i in range(tp):
+        print(f"Adding accelerator {accelerator}")
         pg_resources.append({"CPU": 1, accelerator: 1})  # for the vLLM actors
 
     # We use the "STRICT_PACK" strategy below to ensure all vLLM actors are placed on
