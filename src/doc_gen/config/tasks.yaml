@@ -51,7 +51,7 @@ intent_extraction_task:
           - intent keyword
           - intent keyword
             ...
-      * 진료 내용
+      * 진료/상담 내용
           - intent keyword
           - intent keyword
             ...
@@ -74,7 +74,25 @@ consultation_analysis_task:
   description: >
     Analyze the doctor's consultation with the patient and extract key details such as symptoms, diagnosis, and treatment plans.
     The analysis should focus on identifying the most relevant information for creating a medical report.
-    The categories would be in SOAP note (an acronym for subjective, objective, assessment, and plan).
+    Extract the following information from the conversation:
+    <example>
+    1. 방문목적: ...
+    2. 구강상태: ... 13번과 16번 치아 상태가 안좋음
+    3. 구강상태에 대한 치료 방안
+        - 상악 전체 틀니
+        - 임플란트 지지 틀니
+        ...
+    4. 상담내용
+        - 설명된 치료 상세내용
+            - 상악 전체 틀니: 전체 턱에 걸쳐서 장착하는 보철물
+            - 임플란트 지지틀니: 임플란트를 식립한 후 임플란트에 틀니를 장착
+            ...
+        - 진행 예정 치료 및 일정
+            - 임플란트 지지 틀니
+        - 총 비용
+            - 240만원(120만원 씩 두개)
+            ...
+    </example>
   expected_output: >
     A structured set of information extracted from the conversation, including the patient's symptoms, diagnosis, and any prescribed treatments or follow-up recommendations.(target language: korean)
 

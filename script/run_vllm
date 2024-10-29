@@ -5,8 +5,8 @@ MAX_JOBS=1 \
 VLLM_USE_MODELSCOPE=false \
     poetry run \
     serve run vllm_serve:build_app\
-        model=/home/work/conan/hf_agents/sample/ko/\
-        tokenizer=Gunulhona/Gemma-Ko-Merge\
+        model=Gunulhona/Gemma-Ko-Med\
+        tokenizer=Gunulhona/Gemma-Ko-Med\
         accelerator=GPU\
         config_format=hf\
         load_format="safetensors"\
