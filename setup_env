@@ -9,7 +9,7 @@ curl -fsSL https://ollama.com/install.sh | sh
 python -m pip install --upgrade pip
 pip install poetry
 poetry lock && poetry install
-pip install flash-attn
+pip install -U https://github.com/Dao-AILab/flash-attention/releases/download/v2.6.3/flash_attn-2.6.3+cu118torch2.1cxx11abiFALSE-cp310-cp310-linux_x86_64.whl
 
 git clone https://github.com/ggerganov/llama.cpp.git
 cd llama.cpp && make LLAMA_CUBLAS=1 

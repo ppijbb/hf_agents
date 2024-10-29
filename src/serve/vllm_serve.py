@@ -22,7 +22,7 @@ from vllm.utils import FlexibleArgumentParser
 from vllm.entrypoints.logger import RequestLogger
 
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "0"
-os.environ["VLLM_DO_NOT_TRACK"] = "1"
+os.environ["VLLM_DO_NOT_TRACK"] = "0"
 os.environ["VLLM_CPU_KVCACHE_SPACE"] = "8"
 os.environ["VLLM_CPU_OMP_THREADS_BIND"] = "0-63"
 os.environ["RAY_DEDUP_LOGS"] = "0" 
@@ -118,7 +118,11 @@ def parse_vllm_args(cli_args: Dict[str, str]):
     )
 
     parser = make_arg_parser(arg_parser)
-    arg_strings = ["--enforce_eager", "--worker_use_ray"]
+    arg_strings = [
+        "--enforce_eager", 
+        "--worker_use_ray", 
+        "--trust_remote_code",
+        ]
     for key, value in cli_args.items():
         arg_strings.extend([f"--{key}", str(value)])
     logger.info(arg_strings)

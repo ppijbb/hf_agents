@@ -5,12 +5,13 @@ MAX_JOBS=1 \
 VLLM_USE_MODELSCOPE=false \
     poetry run \
     serve run vllm_serve:build_app\
-        model=Gunulhona/Gemma-Ko-Med\
+        model=/home/work/conan/hf_agents/sample/ko/\
+        tokenizer=Gunulhona/Gemma-Ko-Merge\
         accelerator=GPU\
-        load_format=auto\
-        dtype=half\
+        config_format=hf\
+        load_format="safetensors"\
+        dtype="float16"\
         gpu_memory_utilization=0.9\
-        block_size=8\
         max_model_len=4096
        
 
