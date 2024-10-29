@@ -1,5 +1,4 @@
 #!/bin/bash
-VLLM_MODEL=Gemma-Med-Ko
 echo model will change to "$VLLM_MODEL"....;
 
 tmux send -t serve.0 "export VLLM_MODEL=$VLLM_MODEL" ENTER;
