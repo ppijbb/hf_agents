@@ -20,6 +20,7 @@ conversation_generation_task:
     The conversation should include the patient's symptoms, the doctor's diagnosis, and the prescribed treatment plan.
     The wording of the conversation uses tone like native korean in real situations.
     The Dentist must talk more than the patient just like a real situation.
+    Use "~해요" more than "~합니다" in the conversation.
     Create a conversation that takes place during {situation} in the {department} at {date}, patient named {patient_name}.
   expected_output: >
     A dialogue script .txt(target language: korean only)
@@ -41,7 +42,7 @@ intent_extraction_task:
   description: >
     Analyze the generated doctor-patient conversation and extract key medical intents.
     Identify and categorize intentions such as symptom reporting, diagnosis requests, treatment discussions, and follow-up arrangements.
-    Intent should be a simple word only.
+    Intent should be a simple word only. DO NOT BREAK DOWN THE INTENTS, JUST LIST UP THE INTENTS.
     Follow the format below:
       * 방문 목적
           - intent keyword
