@@ -40,7 +40,7 @@ def log_execution_time(func):
         start_time = time.time()
         result = func(*args, **kwargs)
         end_time = time.time()
-        print(f"Function <{func.__name__}> executed in {end_time - start_time:.4f} seconds")
+        print(f"\n\nFunction <{func.__name__}> executed in {end_time - start_time:.4f} seconds\n\n")
         return result
     return wrapper
 
@@ -53,13 +53,15 @@ def run():
         "department": random.choice(departments),
         "situation": random.choice(situations),
         "date": get_today(),
-        "patient_name": "홍길동"
+        "patient_name": "사용자1"
     }
     # asyncio.run(
     #     DocGenCrew().crew().kickoff_async(
     #         inputs=inputs))
     while True:
-        DocGenCrew().crew().kickoff(inputs=inputs)
+        log_execution_time(
+            DocGenCrew().crew().kickoff(inputs=inputs)
+            )
 
 @log_execution_time
 def train():
