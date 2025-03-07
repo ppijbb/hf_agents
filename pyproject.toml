@@ -42,7 +42,7 @@ priority = "explicit"
 
 [[tool.poetry.source]]
 name = "flashinfer"
-url = "https://flashinfer.ai/whl/cu121/torch2.4/"
+url = "https://flashinfer.ai/whl/cu121/torch2.5/"
 priority = "explicit"
 
 [tool.poetry.scripts]

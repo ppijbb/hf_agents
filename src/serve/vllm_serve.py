@@ -8,6 +8,8 @@ from starlette.responses import StreamingResponse, JSONResponse
 
 from ray import serve
 
+import flash_attn_2_cuda as flash_attn_gpu
+
 from vllm.engine.arg_utils import AsyncEngineArgs
 from vllm.engine.async_llm_engine import AsyncLLMEngine
 from vllm.entrypoints.openai.cli_args import make_arg_parser
@@ -17,7 +19,7 @@ from vllm.entrypoints.openai.protocol import (
     ErrorResponse,
 )
 from vllm.entrypoints.openai.serving_chat import OpenAIServingChat
-from vllm.entrypoints.openai.serving_engine import LoRAModulePath, PromptAdapterPath, BaseModelPath
+from vllm.entrypoints.openai.serving_models import LoRAModulePath, PromptAdapterPath, BaseModelPath
 from vllm.utils import FlexibleArgumentParser
 from vllm.entrypoints.logger import RequestLogger
 
@@ -52,6 +54,7 @@ class VLLMDeployment:
         request_logger: Optional[RequestLogger] = None,
         chat_template: Optional[str] = None,
     ):
+        os.environ["CUDA_VISIBLE_DEVICES"] = "3"
         logger.info(f"Starting with engine args: {engine_args.model}")
         logger.info(f"vLLM Attention Backend: {os.getenv('VLLM_ATTENTION_BACKEND')}")
         self.openai_serving_chat = None
@@ -121,7 +124,7 @@ def parse_vllm_args(cli_args: Dict[str, str]):
     parser = make_arg_parser(arg_parser)
     arg_strings = [
         # "--enforce_eager", 
-        "--worker_use_ray", 
+        # "--ray_workers_use_nsight", 
         "--trust_remote_code",
         "--disable_sliding_window",
         "--enable_prefix_caching"
@@ -147,7 +150,7 @@ def build_app(cli_args: Dict[str, str]) -> serve.Application:
         accelerator = "GPU"
     parsed_args = parse_vllm_args(cli_args)
     engine_args = AsyncEngineArgs.from_cli_args(parsed_args)
-    engine_args.worker_use_ray = True
+    # engine_args.worker_use_ray = True
 
     tp = engine_args.tensor_parallel_size
     logger.info(f"Tensor parallelism = {tp}")
@@ -159,11 +162,17 @@ def build_app(cli_args: Dict[str, str]) -> serve.Application:
 
     # We use the "STRICT_PACK" strategy below to ensure all vLLM actors are placed on
     # the same Ray node.
-    return (VLLMDeployment
-            # .options(
-            #     placement_group_bundles=pg_resources, 
-            #     placement_group_strategy="STRICT_PACK"
-            # )
+    serve.start(
+        proxy_location="EveryNode", 
+        http_options={"host": "0.0.0.0", "port": cli_args.get("port", 8031)},
+        )
+    return (VLLMDeployment.options(
+                # placement_group_bundles=[{
+                #     "CPU": 1.0, 
+                #     "GPU": float(torch.cuda.is_available())
+                #     }], 
+                # placement_group_strategy="STRICT_PACK"
+            )
             .bind(
                 engine_args,
                 parsed_args.response_role,
