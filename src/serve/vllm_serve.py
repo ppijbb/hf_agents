@@ -8,6 +8,7 @@ from starlette.responses import StreamingResponse, JSONResponse
 
 from ray import serve
 
+import torch
 import flash_attn_2_cuda as flash_attn_gpu
 
 from vllm.engine.arg_utils import AsyncEngineArgs
