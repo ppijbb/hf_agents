@@ -34,6 +34,7 @@ asgi-lifespan = "^2.1.0"
 # flash-attn = "^2.6.3"
 flashinfer = { version = "^0.1.6", source = "flashinfer" }
 modelscope = "^1.19.2"
+smolagents = "^1.10.0"
 
 [[tool.poetry.source]]
 name = "torch"
