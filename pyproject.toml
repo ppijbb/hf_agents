@@ -36,6 +36,7 @@ asgi-lifespan = "^2.1.0"
 flashinfer = { version = "^0.1.6", source = "flashinfer" }
 modelscope = "^1.19.2"
 smolagents = "^1.10.0"
+pymongo = "^4.11.2"
 
 [[tool.poetry.source]]
 name = "torch"
