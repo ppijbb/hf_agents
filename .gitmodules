@@ -4,3 +4,6 @@
 [submodule "deep-searcher"]
 	path = deep-searcher
 	url = https://github.com/zilliztech/deep-searcher.git
+[submodule "node-deepresearch"]
+	path = node-deepresearch
+	url = https://github.com/dzhng/deep-research.git
