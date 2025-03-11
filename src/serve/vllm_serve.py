@@ -20,9 +20,11 @@ from vllm.entrypoints.openai.protocol import (
     ErrorResponse,
 )
 from vllm.entrypoints.openai.serving_chat import OpenAIServingChat
-from vllm.entrypoints.openai.serving_models import LoRAModulePath, PromptAdapterPath, BaseModelPath
+from vllm.entrypoints.openai.serving_models import OpenAIServingModels, LoRAModulePath, PromptAdapterPath, BaseModelPath
 from vllm.utils import FlexibleArgumentParser
 from vllm.entrypoints.logger import RequestLogger
+
+from middleware import RequestResponseLoggingMiddleware
 
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "0"
 os.environ["VLLM_DO_NOT_TRACK"] = "0"
@@ -34,6 +36,7 @@ os.environ["VLLM_ATTENTION_BACKEND"] = "XFORMERS"
 logger = logging.getLogger("ray.serve")
 
 app = FastAPI()
+app.add_middleware(RequestResponseLoggingMiddleware)
 
 
 @serve.deployment(
@@ -69,7 +72,9 @@ class VLLMDeployment:
 
     @app.post("/v1/chat/completions")
     async def create_chat_completion(
-        self, request: ChatCompletionRequest, raw_request: Request
+        self, 
+        request: ChatCompletionRequest, 
+        raw_request: Request
     ):
         """OpenAI-compatible HTTP endpoint.
 
@@ -89,12 +94,21 @@ class VLLMDeployment:
             self.openai_serving_chat = OpenAIServingChat(
                 engine_client=self.engine,
                 model_config=model_config,
-                base_model_paths=served_model_names,
+                models=OpenAIServingModels(
+                    engine_client=self.engine,
+                    model_config=model_config,
+                    base_model_paths=[base_model_path],
+                    lora_modules=self.lora_modules,
+                    prompt_adapters=self.prompt_adapters,),
                 response_role=self.response_role,
-                lora_modules=self.lora_modules,
-                prompt_adapters=self.prompt_adapters,
                 request_logger=self.request_logger,
                 chat_template=self.chat_template,
+                return_tokens_as_token_ids=False,
+                enable_reasoning=False,
+                reasoning_parser=None,
+                enable_auto_tools=False,
+                tool_parser=None,
+                enable_prompt_tokens_details=False,
             )
         logger.info(f"Request: {request}")
         generator = await self.openai_serving_chat.create_chat_completion(
