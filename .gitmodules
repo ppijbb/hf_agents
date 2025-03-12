@@ -7,3 +7,6 @@
 [submodule "node-deepresearch"]
 	path = node-deepresearch
 	url = https://github.com/dzhng/deep-research.git
+[submodule "OpenManus"]
+	path = OpenManus
+	url = https://github.com/mannaandpoem/OpenManus.git
