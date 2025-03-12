@@ -130,11 +130,12 @@ class VLLMDeployment:
             raw_request=raw_request
         )
         if isinstance(generator, ErrorResponse):
-            logging.error(f"Error response: {generator}")
+            logger.error(f"Error response: {generator}")
             return JSONResponse(
                 content=generator.model_dump(), status_code=generator.code
             )
         if request.stream:
+            logger.info("~~~ Streaming response ~~~")
             return StreamingResponse(content=generator, media_type="text/event-stream")
         else:
             assert isinstance(generator, ChatCompletionResponse)
