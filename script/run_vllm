@@ -10,9 +10,10 @@ VLLM_USE_MODELSCOPE=false \
         accelerator=GPU\
         config_format=hf\
         quantization=awq\
-        load_format="safetensors"\
-        dtype="float16"\
-        gpu_memory_utilization=0.9\
+        load_format=safetensors\
+        dtype=float16\
+        kv_cache_dtype=fp8\
+        gpu_memory_utilization=0.95\
         max_model_len=4096
        
 

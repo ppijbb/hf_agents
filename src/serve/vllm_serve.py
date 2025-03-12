@@ -70,6 +70,19 @@ class VLLMDeployment:
         self.chat_template = chat_template
         self.engine = AsyncLLMEngine.from_engine_args(engine_args)
 
+    def _remove_quantized_method_name(
+        self, 
+        model_name: BaseModelPath
+    )->str:
+        return BaseModelPath(
+            name=model_name.name
+                      .replace("-AWQ", "")
+                      .replace("-QAT", "")
+                      .replace("-GGUF", "")
+                      .replace("-QAT-INT8", "")
+                      .replace("-GGUF-INT8", ""),
+            model_path=model_name.model_path)
+    
     @app.post("/v1/chat/completions")
     async def create_chat_completion(
         self, 
@@ -88,21 +101,22 @@ class VLLMDeployment:
                 name=self.engine_args.model,
                 model_path=self.engine_args.model)
             if self.engine_args.served_model_name is not None:
-                served_model_names = base_model_path # self.engine_args.served_model_name
+                served_model_names = self._remove_quantized_method_name(base_model_path) # self.engine_args.served_model_name
             else:
-                served_model_names = [base_model_path] # [self.engine_args.model]
+                served_model_names = [self._remove_quantized_method_name(base_model_path)] # [self.engine_args.model]
             self.openai_serving_chat = OpenAIServingChat(
                 engine_client=self.engine,
                 model_config=model_config,
                 models=OpenAIServingModels(
                     engine_client=self.engine,
                     model_config=model_config,
-                    base_model_paths=[base_model_path],
+                    base_model_paths=served_model_names,
                     lora_modules=self.lora_modules,
-                    prompt_adapters=self.prompt_adapters,),
+                    prompt_adapters=self.prompt_adapters),
                 response_role=self.response_role,
                 request_logger=self.request_logger,
                 chat_template=self.chat_template,
+                chat_template_content_format="auto",
                 return_tokens_as_token_ids=False,
                 enable_reasoning=False,
                 reasoning_parser=None,
@@ -112,7 +126,8 @@ class VLLMDeployment:
             )
         logger.info(f"Request: {request}")
         generator = await self.openai_serving_chat.create_chat_completion(
-            request, raw_request
+            request=request,
+            raw_request=raw_request
         )
         if isinstance(generator, ErrorResponse):
             logging.error(f"Error response: {generator}")
