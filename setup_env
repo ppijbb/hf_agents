@@ -10,6 +10,8 @@ python -m pip install --upgrade pip
 pip install poetry
 poetry lock && poetry install
 MAX_JOBS=8 pip install --no-deps https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.4.post1/flash_attn-2.7.4.post1+cu12torch2.5cxx11abiFALSE-cp312-cp312-linux_x86_64.whl
+git clone https://github.com/vllm-project/vllm.git
+cd vllm && VLLM_USE_PRECOMPILED=1 pip install --editable .
 
 git clone https://github.com/ggerganov/llama.cpp.git
 cd llama.cpp && make LLAMA_CUBLAS=1 

@@ -5,17 +5,17 @@ MAX_JOBS=1 \
 VLLM_USE_MODELSCOPE=false \
     poetry run \
     serve run vllm_serve:build_app\
-        model=Qwen/QwQ-32B-AWQ\
-        tokenizer=Qwen/QwQ-32B-AWQ\
+        model=google/gemma-3-4b-it\
+        tokenizer=google/gemma-3-4b-it\
         accelerator=GPU\
         config_format=hf\
-        quantization=awq\
         load_format=safetensors\
         dtype=float16\
         kv_cache_dtype=fp8\
         gpu_memory_utilization=0.95\
-        max_model_len=4096
-       
+        max_model_len=4096\
+        tensor-parallel-size=1\
+        hf-overrides='{"architectures": ["Gemma3ForConditionalGeneration"]}'
 
 # usage: vllm serve [-h] [--model MODEL]
 #                   [--task {auto,generate,embedding,embed,classify,score,reward,transcription}]

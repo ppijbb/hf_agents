@@ -31,7 +31,7 @@ os.environ["VLLM_DO_NOT_TRACK"] = "0"
 os.environ["VLLM_CPU_KVCACHE_SPACE"] = "8"
 os.environ["VLLM_CPU_OMP_THREADS_BIND"] = "0-63"
 os.environ["RAY_DEDUP_LOGS"] = "0" 
-os.environ["VLLM_ATTENTION_BACKEND"] = "XFORMERS"
+os.environ["VLLM_ATTENTION_BACKEND"] = "FLASH_ATTN"
 
 logger = logging.getLogger("ray.serve")
 
@@ -135,7 +135,6 @@ class VLLMDeployment:
                 content=generator.model_dump(), status_code=generator.code
             )
         if request.stream:
-            logger.info("~~~ Streaming response ~~~")
             return StreamingResponse(content=generator, media_type="text/event-stream")
         else:
             assert isinstance(generator, ChatCompletionResponse)
@@ -154,11 +153,11 @@ def parse_vllm_args(cli_args: Dict[str, str]):
 
     parser = make_arg_parser(arg_parser)
     arg_strings = [
-        # "--enforce_eager", 
+        "--enforce_eager", 
         # "--ray_workers_use_nsight", 
         "--trust_remote_code",
-        "--disable_sliding_window",
-        "--enable_prefix_caching"
+        # "--disable_sliding_window",
+        # "--enable_prefix_caching"
         ]
     for key, value in cli_args.items():
         arg_strings.extend([f"--{key}", str(value)])
@@ -181,6 +180,7 @@ def build_app(cli_args: Dict[str, str]) -> serve.Application:
         accelerator = "GPU"
     parsed_args = parse_vllm_args(cli_args)
     engine_args = AsyncEngineArgs.from_cli_args(parsed_args)
+    engine_args.enforce_eager = True
     # engine_args.worker_use_ray = True
 
     tp = engine_args.tensor_parallel_size
