@@ -5,15 +5,15 @@ MAX_JOBS=1 \
 VLLM_USE_MODELSCOPE=false \
     poetry run \
     serve run vllm_serve:build_app\
-        model=google/gemma-3-4b-it\
-        tokenizer=google/gemma-3-4b-it\
+        model=ISTA-DASLab/gemma-3-27b-it-GPTQ-4b-128g\
+        tokenizer=ISTA-DASLab/gemma-3-27b-it-GPTQ-4b-128g\
         accelerator=GPU\
         config_format=hf\
         load_format=safetensors\
         dtype=float16\
         kv_cache_dtype=fp8\
         gpu_memory_utilization=0.95\
-        max_model_len=4096\
+        max_model_len=8192\
         tensor-parallel-size=1\
         hf-overrides='{"architectures": ["Gemma3ForConditionalGeneration"]}'
 

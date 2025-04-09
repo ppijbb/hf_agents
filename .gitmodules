@@ -10,3 +10,9 @@
 [submodule "OpenManus"]
 	path = OpenManus
 	url = https://github.com/mannaandpoem/OpenManus.git
+[submodule "path/to/vllm"]
+	path = path/to/vllm
+	url = https://github.com/vllm-project/vllm.git
+[submodule "vllm"]
+	path = vllm
+	url = https://github.com/vllm-project/vllm.git
