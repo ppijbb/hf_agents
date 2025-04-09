@@ -16,3 +16,6 @@
 [submodule "vllm"]
 	path = vllm
 	url = https://github.com/vllm-project/vllm.git
+[submodule "mcp_servers"]
+	path = mcp_servers
+	url = https://github.com/modelcontextprotocol/servers.git
