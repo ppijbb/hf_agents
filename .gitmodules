@@ -19,3 +19,6 @@
 [submodule "mcp_servers"]
 	path = mcp_servers
 	url = https://github.com/modelcontextprotocol/servers.git
+[submodule "gemini-cli"]
+	path = gemini-cli
+	url = https://github.com/google-gemini/gemini-cli.git
